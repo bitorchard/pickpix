@@ -9,3 +9,4 @@ WORKDIR /pickpix-app
 COPY . /pickpix-app/
 
 RUN pip3 install -r requirements.txt
+
