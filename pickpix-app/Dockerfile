@@ -13,6 +13,6 @@ RUN pip3 install -r requirements.txt
 # Setup apache and django
 WORKDIR /pickpix-app/website
 
-RUN python manage.py runmodwsgi --setup-only --port=80 \
+RUN python3 manage.py runmodwsgi --setup-only --port=80 \
     --user www-data --group www-data \
     --server-root=/pickpix-app/website
