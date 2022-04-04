@@ -13,7 +13,7 @@ jobs:
       - name: Build and deploy
         working-directory: ./pickpix-app
         run: |
-          docker build --tag pickpix-app:latest .
+          docker build --no-cache --tag pickpix-app:latest .
           docker save pickpix-app > pickpix-app_image.tar
           microk8s ctr image import pickpix-app_image.tar
           microk8s.kubectl apply -f pickpix-app-deployment.yaml
