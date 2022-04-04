@@ -9,6 +9,6 @@ WORKDIR /pickpix-app/website
 
 RUN python3 manage.py runmodwsgi --setup-only --port=80 \
     --user www-data --group www-data \
-    --server-root=/pickpix-app/website
+    --server-root=/etc/mod_wsgi-express-80
 
 RUN /etc/mod_wsgi-express-80/apachectl start
