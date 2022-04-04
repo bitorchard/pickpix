@@ -7,7 +7,7 @@ on:
 
 jobs:
   job_name:
-    runs_on: [control-center]
+    runs-on: [control-center]
     steps:
       - uses: actions/checkout@v1
       - name: Build and deploy
