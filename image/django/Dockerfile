@@ -4,8 +4,7 @@ RUN apt update
 RUN apt install -y python3
 RUN apt install -y python3-pip
 
-RUN mkdir /pickpix-app
-WORKDIR /pickpix-app
-COPY . /pickpix-app/
+WORKDIR /tmp
+COPY requirements.txt /tmp
 
 RUN pip3 install -r requirements.txt

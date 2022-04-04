@@ -1,5 +1,9 @@
 FROM apache-django-base:latest
 
+RUN mkdir /pickpix-app
+WORKDIR /pickpix-app
+COPY . /pickpix-app/
+
 # Setup apache and django
 WORKDIR /pickpix-app/website
 
