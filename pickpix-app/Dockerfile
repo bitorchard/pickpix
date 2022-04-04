@@ -1,6 +1,8 @@
-FROM httpd:2.4
+FROM ubuntu/apache2:2.4-20.04_beta
 
-RUN apt install python3
+RUN apt update
+RUN apt install -y python3
+RUN apt install -y python3-pip
 
 RUN mkdir /pickpix-app
 WORKDIR /pickpix-app
