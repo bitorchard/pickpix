@@ -1,4 +1,4 @@
-FROM ubuntu-apache-base:latest
+FROM apache-django-base:latest
 
 # Setup apache and django
 WORKDIR /pickpix-app/website
