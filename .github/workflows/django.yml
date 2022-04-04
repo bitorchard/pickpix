@@ -1,0 +1,17 @@
+name: Django CI
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  job_name:
+    runs_on: [control-center]
+    steps:
+      - uses: actions/checkout@v1
+      - name: Build and deploy
+        working-directory: ./pickpix-app
+        run: |
+          docker build --tag pickpix-app:latest .
+          microk8s.kubectl apply -f pickpix-app-deployment.yaml
