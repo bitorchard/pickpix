@@ -27,5 +27,6 @@ spec:
       containers:
       - image: pickpix-app:latest
         name: pickpix-app
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 80
