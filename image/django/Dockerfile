@@ -1,6 +1,8 @@
-FROM ubuntu/apache2:2.4-20.04_beta
+FROM ubuntu:latest
 
 RUN apt update
+RUN apt install -y vim
+RUN apt install -y net-tools
 RUN apt install -y python3
 RUN apt install -y python3-pip
 
