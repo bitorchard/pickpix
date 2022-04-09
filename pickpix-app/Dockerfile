@@ -13,6 +13,6 @@ RUN python3 manage.py runmodwsgi --setup-only --port=80 \
 
 RUN ln -s /etc/mod_wsgi-express-80/apachectl apachectl
 
-RUN sudo update-rc.d apachectl defaults
+RUN update-rc.d apachectl defaults
 
 #RUN /etc/mod_wsgi-express-80/apachectl start
