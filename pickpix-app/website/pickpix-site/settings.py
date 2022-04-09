@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-@#o%lh_q67z$xh3nd05*tm%zr_-f8q9v$tlmq*3kx^nc!ezocy
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['pickpix-app']
 
 
 # Application definition
@@ -50,7 +50,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'pickpix.urls'
+ROOT_URLCONF = 'pickpix-site.urls'
 
 TEMPLATES = [
     {
@@ -68,7 +68,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'pickpix.wsgi.application'
+WSGI_APPLICATION = 'pickpix-site.wsgi.application'
 
 
 # Database
