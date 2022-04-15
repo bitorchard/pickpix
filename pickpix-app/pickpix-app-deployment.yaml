@@ -30,9 +30,7 @@ spec:
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 80
-        command:
-        - /etc/mod_wsgi-express-80/apachectl
-        - start
+        command: ["/etc/mod_wsgi-express-80/apachectl", "start", "&&", "tail", "-f", "/dev/null"]
           #command:
           #- tail
           #- "-f"
