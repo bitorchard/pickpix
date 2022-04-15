@@ -30,8 +30,5 @@ spec:
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 80
-        command: ["/pickpix-app/start_httpd.sh"]
-          #command:
-          #- tail
-          #- "-f"
-          #- /dev/null
+          #command: ["/pickpix-app/start_httpd.sh"]
+        command: ["tail", "-f", "/dev/null"]
