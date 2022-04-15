@@ -1,0 +1,4 @@
+create database pickpix;
+create user 'admin'@'localhost' identified by 'ca$hc0w';
+use pickpix;
+grant all privileges on pickpix to 'admin'@'localhost' with grant option;
