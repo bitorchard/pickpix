@@ -1,3 +1,8 @@
 from django.db import models
 
-# Create your models here.
+class PickToken(models.Model):
+    token_id = models.CharField(max_length=200)
+
+class Pixel(models.Model):
+    token = models.ForeignKey(PickToken)
+    pixel_index = models.IntegerField(default=0, unique=True)
