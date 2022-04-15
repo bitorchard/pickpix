@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['pickpix-app']
 # Application definition
 
 INSTALLED_APPS = [
+    'pickpix.apps.PickpixConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
