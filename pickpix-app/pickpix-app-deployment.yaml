@@ -31,6 +31,9 @@ spec:
         ports:
         - containerPort: 80
         command:
-        - tail
-        - "-f"
-        - /dev/null
+        - /etc/mod_wsgi-express-80/apachectl
+        - start
+          #command:
+          #- tail
+          #- "-f"
+          #- /dev/null
