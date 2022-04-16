@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-@#o%lh_q67z$xh3nd05*tm%zr_-f8q9v$tlmq*3kx^nc!ezocy
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['pickpix-app']
+ALLOWED_HOSTS = ['pickpix-app', '192.168.68.7']
 
 
 # Application definition
@@ -56,7 +56,7 @@ ROOT_URLCONF = 'pickpix-site.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -122,6 +122,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
