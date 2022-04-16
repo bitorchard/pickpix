@@ -17,7 +17,7 @@ RUN echo $'\n\
 Alias /static/ /pickpix-app/website/static/ \n\
 <Directory \'/pickpix-app/website/static\'> \n\
     Require all granted \n\
-</Directory> \n\' \
+</Directory> \n' \
 >> /etc/mod_wsgi-express-80/httpd.conf
 
 RUN chown -R www-data:www-data /pickpix-app/website/static
