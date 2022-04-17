@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: hydranode
+spec:
+  ports:
+  - port: 3389
+  selector:
+    app: hydranode
+  clusterIP: None
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hydranode
+spec:
+  selector:
+    matchLabels:
+      app: hydranode
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: hydranode
+    spec:
+			volumes:
+    	- name: testnet-datadir-pv-storage
+      	persistentVolumeClaim:
+        	claimName: testnet-datadir-pv-claim
+      containers:
+      - image: hydranode:latest
+        name: hydranode
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3389
+        volumeMounts:
+        - mountPath: "/usr/share/hyranode/datadir"
+          name: testnet-datadir-pv-storage
+        command: ["/root/Hydra/bin/run-testnet.sh"]
