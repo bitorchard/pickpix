@@ -4,7 +4,7 @@ metadata:
   name: hydranode
 spec:
   ports:
-  - port: 3389
+  - port: 13389
   selector:
     app: hydranode
   clusterIP: None
@@ -24,17 +24,19 @@ spec:
       labels:
         app: hydranode
     spec:
-			volumes:
-    	- name: testnet-datadir-pv-storage
-      	persistentVolumeClaim:
-        	claimName: testnet-datadir-pv-claim
+      volumes:
+      - name: testnet-datadir-pv-storage
+        persistentVolumeClaim:
+          claimName: testnet-datadir-pv-claim
       containers:
       - image: hydranode:latest
         name: hydranode
         imagePullPolicy: IfNotPresent
         ports:
-        - containerPort: 3389
+        - containerPort: 13389
+        - containerPort: 1334
+          hostPort: 1334
         volumeMounts:
-        - mountPath: "/usr/share/hyranode/datadir"
+        - mountPath: "/usr/share/hydranode/datadir"
           name: testnet-datadir-pv-storage
         command: ["/root/Hydra/bin/run-testnet.sh"]

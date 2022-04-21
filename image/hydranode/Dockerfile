@@ -45,4 +45,4 @@ ENV PATH="/root/Hydra/bin:${PATH}"
 
 WORKDIR /root/Hydra/bin
 RUN chmod +x ./run-testnet.sh
-CMD ["./run-testnet.sh"]
+#CMD ["./run-testnet.sh"]
