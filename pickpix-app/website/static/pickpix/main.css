@@ -6,12 +6,16 @@
 #container {
     display: grid;
     grid-gap: 0;
-    grid-template-rows: repeat(var(--grid-rows), 1fr);
-    grid-template-columns: repeat(var(--grid-cols), 1fr);
+    #grid-template-rows: repeat(200, minmax(1vw, 1vw));
+    grid-template-columns: repeat(var(--grid-cols), minmax(1.9vw, 1.9vw));
+    #grid-template-rows: repeat(var(--grid-rows), auto 1fr auto);
+    #grid-template-columns: repeat(var(--grid-cols), auto 1fr auto);
 }
 
 .grid-item {
-    padding: 1em;
+    padding: 0em;
     border: 1px solid #ddd;
     text-align: center;
+    font-size: 0.5vw;
+    aspect-ratio: 1;
 }
