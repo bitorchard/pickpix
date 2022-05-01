@@ -5,6 +5,9 @@ metadata:
 spec:
   ports:
   - port: 13389
+    name: rpc
+  - port: 1334
+    name: testnet
   selector:
     app: hydranode
   clusterIP: None
