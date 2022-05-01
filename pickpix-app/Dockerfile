@@ -22,7 +22,7 @@ WORKDIR /pickpix-app/website/static/pickpix
 RUN apt update
 RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt install -y npm
 RUN npm install browserify
-RUN export PATH=$PATH:/pickpix-app/website/static/pickpix/node_modules/.bin
+ENV PATH=$PATH:/pickpix-app/website/static/pickpix/node_modules/.bin
 RUN npm install hydraweb3-js
 RUN browserify deps.js > bundle.js
 
