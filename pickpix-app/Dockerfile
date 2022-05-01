@@ -20,7 +20,7 @@ RUN python3 manage.py runmodwsgi --setup-only --port=80 \
 WORKDIR /pickpix-app/website/static/pickpix
 
 RUN apt update
-RUN apt install -y npm
+RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt install -y npm
 RUN npm install browserify
 RUN export PATH=$PATH:/pickpix-app/website/static/pickpix/node_modules/.bin
 RUN npm install hydraweb3-js
