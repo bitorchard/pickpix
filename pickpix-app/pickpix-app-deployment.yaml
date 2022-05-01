@@ -27,7 +27,7 @@ spec:
       labels:
         app: pickpix-app
     spec:
-      hostname: pickpix-app
+      hostname: pickpix
       containers:
       - image: pickpix-app:latest
         name: pickpix-app

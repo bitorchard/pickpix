@@ -9,13 +9,16 @@ COPY . /pickpix-app/
 # Setup apache and django
 WORKDIR /pickpix-app/website
 
-RUN python3 manage.py runmodwsgi --setup-only --port=80 \
-    --user www-data --group www-data \
+RUN python3 manage.py runmodwsgi \
+    --setup-only \
+    --port=80 \
+    --user www-data \
+    --group www-data \
     --server-root=/etc/mod_wsgi-express-80 \
     --https-port=443 \
     --ssl-certificate-file=/etc/mod_wsgi-express-80/ssl/localhost.crt \
     --ssl-certificate-key-file=/etc/mod_wsgi-express-80/ssl/localhost.key \
-    --server-name=pickpix-app.local
+    --server-name=pickpix.local
 
 WORKDIR /pickpix-app/website/static/pickpix
 
