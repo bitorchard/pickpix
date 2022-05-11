@@ -30,6 +30,23 @@ ALLOWED_HOSTS = ['pickpix', 'pickpix.local', '192.168.68.7']
 
 # Application definition
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'info_log': {
+            'class': 'logging.FileHandler',
+            'filename': 'info.log',
+        },
+    },
+    'loggers': {
+        '': {
+            'level': 'DEBUG',
+            'handlers': ['info_log'],
+        },
+    },
+}
+
 INSTALLED_APPS = [
     'pickpix.apps.PickpixConfig',
     'django.contrib.admin',

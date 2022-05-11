@@ -1,0 +1,23 @@
+{% load static %}
+
+<html>
+<head>
+    <link rel="stylesheet" href="{% static 'pickpix/main.css' %}">
+    <script>
+        var usedPixels = {{ used_pixels }};
+    </script>
+    <script src="{% static 'pickpix/web3.js' %}"></script>
+    <script src="{% static 'pickpix/avax.js' %}" defer></script>
+</head>
+
+<body>
+    <div id="dashboard" style="line-height: 0px">
+        <p>
+        <span class="dashboard" id="account"></span>
+         [<span class="notes" id="magicNumber"></span>]
+        </p>
+        <button class="dashboard" onclick="connectWallet()">Connect Wallet</button><span onclick="mintToken()" style="cursor: pointer; font-size: 20px">&#x1F5D8</span>
+    </div>
+    <div id="container"/>
+</body>
+</html>

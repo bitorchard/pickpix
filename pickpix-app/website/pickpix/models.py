@@ -1,6 +1,7 @@
 from django.db import models
 
 class PickToken(models.Model):
+    owner = models.CharField(max_length=200)
     token_id = models.CharField(max_length=200)
 
 class Pixel(models.Model):

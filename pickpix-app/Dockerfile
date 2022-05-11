@@ -22,10 +22,12 @@ RUN python3 manage.py runmodwsgi \
 
 WORKDIR /pickpix-app/website/static/pickpix
 
-RUN npm install browserify
-ENV PATH=$PATH:/pickpix-app/website/static/pickpix/node_modules/.bin
-RUN npm install hydraweb3-js
-RUN browserify deps.js > bundle.js
+RUN apt install -y wget
+RUN wget https://github.com/ChainSafe/web3.js/raw/v1.2.9/dist/web3.min.js -O web3.js
+#RUN npm install browserify
+#ENV PATH=$PATH:/pickpix-app/website/static/pickpix/node_modules/.bin
+#RUN npm install hydraweb3-js
+#RUN browserify deps.js > bundle.js
 
 RUN mkdir /etc/mod_wsgi-express-80/ssl 
 RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/mod_wsgi-express-80/ssl/localhost.key -out /etc/mod_wsgi-express-80/ssl/localhost.crt -subj "/C=US/ST=PaloAlto/L=PaloAlto/O=ABC/OU=ABC/CN=pickpix.local"
