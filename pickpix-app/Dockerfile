@@ -9,6 +9,9 @@ COPY . /pickpix-app/
 # Setup apache and django
 WORKDIR /pickpix-app/website
 
+RUN pip3 install web3
+RUN pip3 install pillow
+
 RUN python3 manage.py runmodwsgi \
     --setup-only \
     --port=80 \
@@ -24,6 +27,8 @@ WORKDIR /pickpix-app/website/static/pickpix
 
 RUN apt install -y wget
 RUN wget https://github.com/ChainSafe/web3.js/raw/v1.2.9/dist/web3.min.js -O web3.js
+RUN wget https://code.jquery.com/jquery-3.6.0.min.js -O jquery.js
+
 #RUN npm install browserify
 #ENV PATH=$PATH:/pickpix-app/website/static/pickpix/node_modules/.bin
 #RUN npm install hydraweb3-js

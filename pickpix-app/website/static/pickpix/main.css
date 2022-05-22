@@ -15,9 +15,11 @@
 .grid-item {
     padding: 0em;
     border: 1px solid #ddd;
+    background-color: transparent;
     text-align: center;
     font-size: 0.5vw;
     aspect-ratio: 1;
+    z-index: 3;
 }
 
 .dashboard {

@@ -7,6 +7,7 @@
         var usedPixels = {{ used_pixels }};
     </script>
     <script src="{% static 'pickpix/web3.js' %}"></script>
+    <script src="{% static 'pickpix/jquery.js' %}"></script>
     <script src="{% static 'pickpix/avax.js' %}" defer></script>
 </head>
 
@@ -14,10 +15,13 @@
     <div id="dashboard" style="line-height: 0px">
         <p>
         <span class="dashboard" id="account"></span>
-         [<span class="notes" id="magicNumber"></span>]
+         [<span class="notes" id="currentTokenPrice"></span>]
         </p>
         <button class="dashboard" onclick="connectWallet()">Connect Wallet</button><span onclick="mintToken()" style="cursor: pointer; font-size: 20px">&#x1F5D8</span>
     </div>
-    <div id="container"/>
+    <div style="position: relative; width: 95vw; height: 95vw; z-index: 2; text-align: center;" id="container">
+        <img style="position: absolute; z-index: 1; display: block; width: 95vw; height:95vw; margin: 1px;" src="{% static 'pickpix/secret_img.jpg' %}"/>
+        <!--<img style="position:fixed; z-index: 1; width: 94.8vw; height: 94.8vw; padding: 1px; object-fit: ;" src="{% static 'pickpix/secret_img.jpg' %}"/> -->
+    </div>
 </body>
 </html>
