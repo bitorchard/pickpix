@@ -77,7 +77,7 @@ def voucher(request):
 
     return JsonResponse(voucher.to_signed_json())
 
-def generate_signature(ipns_uri, min_price) {
+def generate_signature(ipns_uri, min_price):
     w3 = Web3(Web3.HTTPProvider(PROVIDER_URL))
 
     with open(CONTRACT_JSON_FILE) as f:
@@ -113,7 +113,6 @@ def generate_signature(ipns_uri, min_price) {
     signed = w3.eth.account.sign_message(signable, PRIVATE_KEY)
 
     return signed.signature.hex()
-}
 
 def generate_ipns():
     return "ipns:///TEST_IPNS"
