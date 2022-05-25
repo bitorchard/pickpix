@@ -28,7 +28,7 @@ CACHED_VOUCHER_KEY = 'CACHED_VOUCHER'
 CACHED_VOUCHER_EXPIRATION_SECS = 30*60
 PRIVATE_KEY = "e607298786fc31a8606539101856730258f0192f757664ca7198902e1d3ac713"
 
-class Voucher {
+class Voucher:
     def __init__(self, uri, signature):
         self.uri = uri
         self.min_price = MIN_PRICE
@@ -41,7 +41,6 @@ class Voucher {
             'uri' : self.uri,
             'signature' : self.signature,
         }
-}
 
 def index(request):
     template = loader.get_template('pickpix/avax.html')
