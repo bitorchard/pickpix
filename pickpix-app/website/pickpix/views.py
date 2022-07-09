@@ -16,30 +16,38 @@ from web3 import Web3
 from PIL import Image
 from PIL import ImageDraw
 from datetime import datetime, timedelta
+from pathlib import Path
+from eth_account.messages import encode_structured_data
 
 log = logging.getLogger(__name__)
 
 CHAIN_ID = 43113
-MIN_PRICE = 0.1*10**18
+WEI_PER_AVAX = 10**18
+MIN_PRICE = 0.1
 MAX_PIXEL_INDEX = 2500
 PROVIDER_URL = 'https://api.avax-test.network/ext/bc/C/rpc'
 CONTRACT_JSON_FILE = 'pickpix/contract.json'
 CACHED_VOUCHER_KEY = 'CACHED_VOUCHER'
+SIGNING_DOMAIN = "Pixel-Voucher"
+SIGNATURE_VERSION = "1"
 CACHED_VOUCHER_EXPIRATION_SECS = 30*60
-PRIVATE_KEY = "e607298786fc31a8606539101856730258f0192f757664ca7198902e1d3ac713"
+PRIVATE_KEY = "0xe607298786fc31a8606539101856730258f0192f757664ca7198902e1d3ac713"
 
 class Voucher:
-    def __init__(self, uri, signature):
+    def __init__(self, uri, min_price):
         self.uri = uri
-        self.min_price = MIN_PRICE
-        self.signature = signature
+        self.min_price = min_price
         self.creation_date = datetime.now()
 
-    def to_signed_json():
+    def toJSON(self):
+        return json.dumps(self, default=lambda o: o.__dict__,
+            sort_keys=True, indent=4)
+
+    def to_signed_json(self):
         return {
-            'minPrice' : MIN_PRICE,
-            'uri' : self.uri,
-            'signature' : self.signature,
+            "minPrice" : self.min_price,
+            "uri" : self.uri,
+            "signature" : generate_signature(self.min_price, self.uri),
         }
 
 def index(request):
@@ -47,17 +55,26 @@ def index(request):
     pixel_ids = [p.pixel_index for p in Pixel.objects.all()]
     json_pixel_ids = json.dumps(pixel_ids)
     context = {'used_pixels' : json_pixel_ids}
-    render_secret_image()
+    check_latest_token2()
     return HttpResponse(template.render(context, request))
 
-@csrf_exempt
-def token(request):
-    if request.method == "POST":
-        req_data = json.loads(request.body)
+def token_price(request):
+    token_price = MIN_PRICE
+    try:
+        obj = GlobalConfig.objects.get(name='token_cost')
+        token_price = float(obj.value)
+    except Pixel.DoesNotExist:
+        pass
+    return JsonResponse({'token_price' : token_price})
 
-    log.info("Got token POST with '%s'" % req_data)
-    check_latest_token()
-    return HttpResponse(True)
+#@csrf_exempt
+#def token(request):
+#    if request.method == "POST":
+#        req_data = json.loads(request.body)
+#
+#    log.info("Got token POST with '%s'" % req_data)
+#    check_latest_token2()
+#    return HttpResponse(True)
 
 def random_free_pixel():
     return 1
@@ -70,14 +87,20 @@ def voucher(request):
 
         del request.session[CACHED_VOUCHER_KEY]
 
-    ipns_uri = generate_ipns()
-    signature = generate_signature(MIN_PRICE, ipns_uri)
-    voucher = Voucher(generate_ipns(), signature)
-    request.session[CACHED_VOUCHER_KEY] = voucher
+    min_price = MIN_PRICE
+    try:
+        token_cost = GlobalConfig.objects.get(name='token_cost')
+        min_price = float(token_cost.value)
+    except Pixel.DoesNotExist:
+        pass
+    #signature = generate_signature(int(min_price*WEI_PER_AVAX), ipns_uri)
+    #log.info("Token cost: %d" % int(min_price*WEI_PER_AVAX))
+    voucher = Voucher(generate_ipns(), int(min_price*WEI_PER_AVAX))
+    #request.session[CACHED_VOUCHER_KEY] = voucher
 
     return JsonResponse(voucher.to_signed_json())
 
-def generate_signature(ipns_uri, min_price):
+def generate_signature(min_price, ipns_uri):
     w3 = Web3(Web3.HTTPProvider(PROVIDER_URL))
 
     with open(CONTRACT_JSON_FILE) as f:
@@ -87,9 +110,9 @@ def generate_signature(ipns_uri, min_price):
         "types" : {
             "EIP712Domain": [
                 { "name": "name", "type": "string" },
-                { "name": "version", "type": "string" },
+                #{ "name": "version", "type": "string" },
                 { "name": "chainId", "type": "uint256" },
-                { "name": "verifyingContract", "type": "address" },
+                #{ "name": "verifyingContract", "type": "address" },
             ],
             "NFTVoucher" : [
                 { "name": "minPrice", "type": "uint256" },
@@ -98,9 +121,9 @@ def generate_signature(ipns_uri, min_price):
         },
         "domain" : {
             "chainId": CHAIN_ID,
-            "name": "Pixel-Voucher",
-            "verifyingContract": "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC",
-            "version": "1",
+            "name": SIGNING_DOMAIN,
+            #"verifyingContract": "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC",
+            #"version": "1",
         },
         "primaryType": "NFTVoucher",
         "message" : {
@@ -116,6 +139,103 @@ def generate_signature(ipns_uri, min_price):
 
 def generate_ipns():
     return "ipns:///TEST_IPNS"
+
+def check_latest_token2():
+    w3 = Web3(Web3.HTTPProvider(PROVIDER_URL))
+
+    with open(CONTRACT_JSON_FILE) as f:
+        contract_json = json.load(f)
+
+    csum_address = Web3.toChecksumAddress(contract_json['address'])
+    contract = w3.eth.contract(abi=contract_json['abi'], address=csum_address);
+
+    last_token = contract.functions.lastToken().call()
+
+    used_pixels = lcg_pixels(last_token)
+    render_secret_image2(used_pixels)
+
+def lcg_pixels(last_token):
+    pixels = []
+    last_pixel = 0
+    lcg_c_value = 6666
+    a_big_prime = 50177
+    max_pixels = 50176 # 224^2
+    for t in range(1, last_token+1):
+        last_pixel = (last_pixel + lcg_c_value) % a_big_prime
+        if last_pixel >= max_pixels:
+            last_pixel = (last_pixel + lcg_c_value) % a_big_prime
+        pixels.append(last_pixel)
+    log.info(pixels)
+    return pixels;
+
+def draw_mask(used_pixels, size=2050, rows=224, cols=224):
+    mask_file = Path('static/pickpix/images/mask.jpg')
+    if mask_file.is_file():
+        overlay = Image.open(mask_file)
+    else:
+        overlay = draw_grid()
+
+    grid_size = size / rows
+    draw = ImageDraw.Draw(overlay)
+
+    for p in used_pixels:
+        x_coord = int((p % cols) * grid_size)
+        y_coord = int(int(p / cols) * grid_size)
+        draw.rectangle((x_coord, y_coord, int(x_coord+grid_size), int(y_coord+grid_size)), fill=0)
+
+    overlay.save(mask_file)
+
+    uid = pwd.getpwnam('www-data')[2]
+    gid = grp.getgrnam('www-data')[2]
+    os.chown(mask_file, uid, gid)
+    return overlay
+
+def draw_grid(size=2050, rows=224, cols=224):
+    grid_file = 'static/pickpix/images/grid.jpg'
+    step_count = rows
+    grid = Image.new(mode='L', size=(size, size), color=255)
+
+    draw = ImageDraw.Draw(grid)
+    y_start = 0
+    y_end = grid.height
+    step_size = grid.width / step_count
+
+    for x in range(cols):
+        line = ((int(x*step_size), y_start), (int(x*step_size), y_end))
+        draw.line(line, fill="#ddd")
+
+    x_start = 0
+    x_end = grid.width
+
+    for y in range(rows):
+        line = ((x_start, int(y*step_size)), (x_end, int(y*step_size)))
+        draw.line(line, fill="#ddd", width=1)
+
+    del draw
+
+    grid.save(grid_file)
+
+    uid = pwd.getpwnam('www-data')[2]
+    gid = grp.getgrnam('www-data')[2]
+    os.chown(grid_file, uid, gid)
+    return grid
+
+def render_secret_image2(used_pixels):
+    secret_file_src = 'pickpix/secret_lake_mod.png'
+    secret_file_render = 'static/pickpix/secret_img.jpg'
+
+    secret = Image.open(secret_file_src)
+    secret = secret.convert('RGBA')
+
+    overlay = draw_mask(used_pixels)
+
+    secret.paste(overlay, mask=overlay)
+    secret = secret.convert('RGB')
+    secret.save(secret_file_render)
+
+    uid = pwd.getpwnam('www-data')[2]
+    gid = grp.getgrnam('www-data')[2]
+    os.chown(secret_file_render, uid, gid)
 
 def check_latest_token():
     w3 = Web3(Web3.HTTPProvider(PROVIDER_URL))

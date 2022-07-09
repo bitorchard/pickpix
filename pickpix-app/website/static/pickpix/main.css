@@ -3,15 +3,6 @@
     --grid-rows: 1;
 }
 
-#container {
-    display: grid;
-    grid-gap: 0;
-    #grid-template-rows: repeat(200, minmax(1vw, 1vw));
-    grid-template-columns: repeat(var(--grid-cols), minmax(1.9vw, 1.9vw));
-    #grid-template-rows: repeat(var(--grid-rows), auto 1fr auto);
-    #grid-template-columns: repeat(var(--grid-cols), auto 1fr auto);
-}
-
 .grid-item {
     padding: 0em;
     border: 1px solid #ddd;
@@ -26,9 +17,15 @@
     font-family: "Courier New";
     font-size: 14px;
     font-weight: bold;
+    vertical-align: middle;
 }
 
 .notes {
     font-family: "Courier New";
-    font-size: 10px;
+    font-size: 12px;
+}
+
+.inlined-middle {
+    display: inline-block;
+    vertical-align: middle;
 }

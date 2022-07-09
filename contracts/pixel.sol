@@ -2,40 +2,60 @@
 pragma solidity ^0.8.0;
 pragma abicoder v2; // required to accept structs as function parameters
 
+//import "hardhat/console.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
-import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+//import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+//import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
+//import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import "@openzeppelin/contracts/utils/cryptography/draft-EIP712.sol";
-import "https://github.com/OpenZeppelin/openzeppelin-contracts/contracts/utils/math/SafeCast.sol";
+import "@openzeppelin/contracts/utils/math/SafeCast.sol";
 
-contract Pixel is ERC721URIStorage, EIP712, AccessControl {
-    uint24 lastPixel = 0;
-    uint24 aBigPrime = 500000; // some big prime > 500000
-    uint24 lcgCValue = 6666;
+contract Pixel is ERC721Enumerable, EIP712, AccessControl {
     using Counters for Counters.Counter;
     using SafeCast for uint256;
+    uint24 private lastPixel = 0;
+    uint24 private aBigPrime = 50177; // some big prime > 500000
+    uint24 private lcgCValue = 6666;
     Counters.Counter private _tokenIds;
-    uint256 public constant _maxSupply = 100000;
-    bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
+    uint256 private constant _maxSupply = 50176;
+    bytes32 private constant MINTER_ROLE = keccak256("MINTER_ROLE");
     string private constant SIGNING_DOMAIN = "Pixel-Voucher";
     string private constant SIGNATURE_VERSION = "1";
+    string private imagesBaseURI;
 
-    mapping (address => uint256) pendingWithdrawals;
-    mapping (uint32 => uint24) tokenIdToPixelId;
+    mapping (address => uint256) private pendingWithdrawals;
+    mapping (uint32 => uint24) private tokenIdToPixelId;
 
-    constructor(address payable minter)
+    constructor(address payable minter, string memory baseURI)
         ERC721("PixelNFT", "PXL")
         EIP712(SIGNING_DOMAIN, SIGNATURE_VERSION)
     {
         _setupRole(MINTER_ROLE, minter);
+        setBaseURI(baseURI);
     }
 
     struct NFTVoucher {
         uint256 minPrice;
         string uri;
         bytes signature;
+    }
+
+    function tokenURI(uint256 _tokenId)
+        override
+        public
+        view
+        returns(string memory)
+    {
+        //require(_tokenId >=1 && _tokenId <= _maxSupply);
+        return string(
+            abi.encodePacked(
+                imagesBaseURI,
+                Strings.toString(_tokenId),
+                ".jpg"
+            )
+        );
     }
 
     function decimals()
@@ -46,20 +66,13 @@ contract Pixel is ERC721URIStorage, EIP712, AccessControl {
         return uint8(0);
     }
 
-    function totalSupply()
-        public
-        view
-        returns (uint256)
-    {
-        return _tokenIds.current(); 
-    }
-
-    function getPixelIdFromTokenId(uint32 tokenId)
+    function pixelIdFromTokenId(uint32 tokenId)
         public
         view
         returns (uint24)
     {
-        return tokenIdToPixelId[tokenId]; 
+        require(tokenId >=1 && tokenId <= _tokenIds.current().toUint32());
+        return tokenIdToPixelId[tokenId];
     }
 
     function lastToken()
@@ -82,8 +95,15 @@ contract Pixel is ERC721URIStorage, EIP712, AccessControl {
         return freePixel;
     }
 
-    /// @notice Redeems an NFTVoucher for an actual NFT, creating it in the process.
-    /// @param redeemer The address of the account which will receive the NFT upon success.
+    function setBaseURI(string memory baseURI)
+        public
+    {
+        require(hasRole(MINTER_ROLE, msg.sender), "Only authorized minters can set baseURI");
+        imagesBaseURI = baseURI;
+    }
+
+    // @notice Redeems an NFTVoucher for an actual NFT, creating it in the process.
+    // @param redeemer The address of the account which will receive the NFT upon success.
     /// @param voucher A signed NFTVoucher that describes the NFT to be redeemed.
     function redeem(address redeemer, NFTVoucher calldata voucher)
         public
@@ -102,8 +122,8 @@ contract Pixel is ERC721URIStorage, EIP712, AccessControl {
 
         // first assign the token to the signer, to establish provenance on-chain
         _mint(signer, mintedTokenId);
-        _setTokenURI(mintedTokenId, voucher.uri);
-        
+        //_setTokenURI(mintedTokenId, voucher.uri);
+
         // transfer the token to the redeemer
         _transfer(signer, redeemer, mintedTokenId);
 
@@ -119,7 +139,7 @@ contract Pixel is ERC721URIStorage, EIP712, AccessControl {
         public
     {
         require(hasRole(MINTER_ROLE, msg.sender), "Only authorized minters can withdraw");
-        
+
         // IMPORTANT: casting msg.sender to a payable address is only safe if ALL members of the minter role are payable addresses.
         address payable receiver = payable(msg.sender);
 
@@ -138,20 +158,6 @@ contract Pixel is ERC721URIStorage, EIP712, AccessControl {
         return pendingWithdrawals[msg.sender];
     }
 
-    /// @notice Returns a hash of the given NFTVoucher, prepared using EIP712 typed data hashing rules.
-    /// @param voucher An NFTVoucher to hash.
-    function _hash(NFTVoucher calldata voucher)
-        internal
-        view
-        returns (bytes32)
-    {
-        return _hashTypedDataV4(keccak256(abi.encode(
-            keccak256("NFTVoucher(uint256 minPrice,string uri)"),
-            voucher.minPrice,
-            keccak256(bytes(voucher.uri))
-        )));
-    }
-
     function getChainID()
         external
         view
@@ -162,6 +168,26 @@ contract Pixel is ERC721URIStorage, EIP712, AccessControl {
             id := chainid()
         }
         return id;
+    }
+
+    /// @notice Returns a hash of the given NFTVoucher, prepared using EIP712 typed data hashing rules.
+    /// @param voucher An NFTVoucher to hash.
+    function _hash(NFTVoucher calldata voucher)
+        public
+        view
+        returns (bytes32)
+    {
+        bytes32 typeHash = keccak256(
+            "EIP712Domain(string name,uint256 chainId)"
+        );
+        bytes32 nameHash = keccak256(bytes(SIGNING_DOMAIN));
+        bytes32 structHash = keccak256(abi.encode(
+            keccak256("NFTVoucher(uint256 minPrice,string uri)"),
+            voucher.minPrice,
+            keccak256(bytes(voucher.uri))
+        ));
+
+        return ECDSA.toTypedDataHash(keccak256(abi.encode(typeHash, nameHash, block.chainid)), structHash);
     }
 
     /// @notice Verifies the signature for a given NFTVoucher, returning the address of the signer.
@@ -176,7 +202,13 @@ contract Pixel is ERC721URIStorage, EIP712, AccessControl {
         return ECDSA.recover(digest, voucher.signature);
     }
 
-    function supportsInterface(bytes4 interfaceId) public view virtual override (AccessControl, ERC721) returns (bool) {
+    function supportsInterface(bytes4 interfaceId)
+        public
+        view
+        virtual
+        override (AccessControl, ERC721Enumerable)
+        returns (bool)
+    {
         return ERC721.supportsInterface(interfaceId) || AccessControl.supportsInterface(interfaceId);
     }
 }

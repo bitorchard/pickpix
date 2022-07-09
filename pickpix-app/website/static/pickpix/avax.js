@@ -1,14 +1,26 @@
-//const contractAddress = '0x172a17f19d8c5c827283becb60329f52e2e655cf';
-//const contractABI = [ { "inputs": [], "stateMutability": "nonpayable", "type": "constructor" }, { "anonymous": false, "inputs": [ { "indexed": true, "internalType": "address", "name": "owner", "type": "address" }, { "indexed": true, "internalType": "address", "name": "approved", "type": "address" }, { "indexed": true, "internalType": "uint256", "name": "tokenId", "type": "uint256" } ], "name": "Approval", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": true, "internalType": "address", "name": "owner", "type": "address" }, { "indexed": true, "internalType": "address", "name": "operator", "type": "address" }, { "indexed": false, "internalType": "bool", "name": "approved", "type": "bool" } ], "name": "ApprovalForAll", "type": "event" }, { "inputs": [ { "internalType": "address", "name": "to", "type": "address" }, { "internalType": "uint256", "name": "tokenId", "type": "uint256" } ], "name": "approve", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "recipient", "type": "address" } ], "name": "mintToken", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "uint8", "name": "numTokens", "type": "uint8" } ], "name": "mintTokens", "outputs": [ { "internalType": "uint256[]", "name": "", "type": "uint256[]" } ], "stateMutability": "payable", "type": "function" }, { "anonymous": false, "inputs": [ { "indexed": true, "internalType": "address", "name": "previousOwner", "type": "address" }, { "indexed": true, "internalType": "address", "name": "newOwner", "type": "address" } ], "name": "OwnershipTransferred", "type": "event" }, { "inputs": [], "name": "renounceOwnership", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "from", "type": "address" }, { "internalType": "address", "name": "to", "type": "address" }, { "internalType": "uint256", "name": "tokenId", "type": "uint256" } ], "name": "safeTransferFrom", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "from", "type": "address" }, { "internalType": "address", "name": "to", "type": "address" }, { "internalType": "uint256", "name": "tokenId", "type": "uint256" }, { "internalType": "bytes", "name": "_data", "type": "bytes" } ], "name": "safeTransferFrom", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "operator", "type": "address" }, { "internalType": "bool", "name": "approved", "type": "bool" } ], "name": "setApprovalForAll", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "anonymous": false, "inputs": [ { "indexed": true, "internalType": "address", "name": "from", "type": "address" }, { "indexed": true, "internalType": "address", "name": "to", "type": "address" }, { "indexed": true, "internalType": "uint256", "name": "tokenId", "type": "uint256" } ], "name": "Transfer", "type": "event" }, { "inputs": [ { "internalType": "address", "name": "from", "type": "address" }, { "internalType": "address", "name": "to", "type": "address" }, { "internalType": "uint256", "name": "tokenId", "type": "uint256" } ], "name": "transferFrom", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "newOwner", "type": "address" } ], "name": "transferOwnership", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "_maxMint", "outputs": [ { "internalType": "uint8", "name": "", "type": "uint8" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "_maxSupply", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "_tokenPrice", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "owner", "type": "address" } ], "name": "balanceOf", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "decimals", "outputs": [ { "internalType": "uint8", "name": "", "type": "uint8" } ], "stateMutability": "pure", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "tokenId", "type": "uint256" } ], "name": "getApproved", "outputs": [ { "internalType": "address", "name": "", "type": "address" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "getCurrentPrice", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "pure", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "owner", "type": "address" }, { "internalType": "address", "name": "operator", "type": "address" } ], "name": "isApprovedForAll", "outputs": [ { "internalType": "bool", "name": "", "type": "bool" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "lastToken", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "magicNumber", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "pure", "type": "function" }, { "inputs": [], "name": "name", "outputs": [ { "internalType": "string", "name": "", "type": "string" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "owner", "outputs": [ { "internalType": "address", "name": "", "type": "address" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "tokenId", "type": "uint256" } ], "name": "ownerOf", "outputs": [ { "internalType": "address", "name": "", "type": "address" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "bytes4", "name": "interfaceId", "type": "bytes4" } ], "name": "supportsInterface", "outputs": [ { "internalType": "bool", "name": "", "type": "bool" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "symbol", "outputs": [ { "internalType": "string", "name": "", "type": "string" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "tokenId", "type": "uint256" } ], "name": "tokenURI", "outputs": [ { "internalType": "string", "name": "", "type": "string" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "totalSupply", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }]
-contractABI = [ { "inputs": [ { "internalType": "address payable", "name": "minter", "type": "address" } ], "stateMutability": "nonpayable", "type": "constructor" }, { "anonymous": false, "inputs": [ { "indexed": true, "internalType": "address", "name": "owner", "type": "address" }, { "indexed": true, "internalType": "address", "name": "approved", "type": "address" }, { "indexed": true, "internalType": "uint256", "name": "tokenId", "type": "uint256" } ], "name": "Approval", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": true, "internalType": "address", "name": "owner", "type": "address" }, { "indexed": true, "internalType": "address", "name": "operator", "type": "address" }, { "indexed": false, "internalType": "bool", "name": "approved", "type": "bool" } ], "name": "ApprovalForAll", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": true, "internalType": "bytes32", "name": "role", "type": "bytes32" }, { "indexed": true, "internalType": "bytes32", "name": "previousAdminRole", "type": "bytes32" }, { "indexed": true, "internalType": "bytes32", "name": "newAdminRole", "type": "bytes32" } ], "name": "RoleAdminChanged", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": true, "internalType": "bytes32", "name": "role", "type": "bytes32" }, { "indexed": true, "internalType": "address", "name": "account", "type": "address" }, { "indexed": true, "internalType": "address", "name": "sender", "type": "address" } ], "name": "RoleGranted", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": true, "internalType": "bytes32", "name": "role", "type": "bytes32" }, { "indexed": true, "internalType": "address", "name": "account", "type": "address" }, { "indexed": true, "internalType": "address", "name": "sender", "type": "address" } ], "name": "RoleRevoked", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": true, "internalType": "address", "name": "from", "type": "address" }, { "indexed": true, "internalType": "address", "name": "to", "type": "address" }, { "indexed": true, "internalType": "uint256", "name": "tokenId", "type": "uint256" } ], "name": "Transfer", "type": "event" }, { "inputs": [], "name": "DEFAULT_ADMIN_ROLE", "outputs": [ { "internalType": "bytes32", "name": "", "type": "bytes32" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "MINTER_ROLE", "outputs": [ { "internalType": "bytes32", "name": "", "type": "bytes32" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "_maxSupply", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "components": [ { "internalType": "uint256", "name": "minPrice", "type": "uint256" }, { "internalType": "string", "name": "uri", "type": "string" }, { "internalType": "bytes", "name": "signature", "type": "bytes" } ], "internalType": "struct Pixel.NFTVoucher", "name": "voucher", "type": "tuple" } ], "name": "_verify", "outputs": [ { "internalType": "address", "name": "", "type": "address" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "uint32", "name": "numPixels", "type": "uint32" } ], "name": "allocatePixels", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "to", "type": "address" }, { "internalType": "uint256", "name": "tokenId", "type": "uint256" } ], "name": "approve", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "availableToWithdraw", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "owner", "type": "address" } ], "name": "balanceOf", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "decimals", "outputs": [ { "internalType": "uint8", "name": "", "type": "uint8" } ], "stateMutability": "pure", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "tokenId", "type": "uint256" } ], "name": "getApproved", "outputs": [ { "internalType": "address", "name": "", "type": "address" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "getChainID", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "uint32", "name": "tokenId", "type": "uint32" } ], "name": "getPixelIdFromTokenId", "outputs": [ { "internalType": "uint24", "name": "", "type": "uint24" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "bytes32", "name": "role", "type": "bytes32" } ], "name": "getRoleAdmin", "outputs": [ { "internalType": "bytes32", "name": "", "type": "bytes32" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "bytes32", "name": "role", "type": "bytes32" }, { "internalType": "address", "name": "account", "type": "address" } ], "name": "grantRole", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "bytes32", "name": "role", "type": "bytes32" }, { "internalType": "address", "name": "account", "type": "address" } ], "name": "hasRole", "outputs": [ { "internalType": "bool", "name": "", "type": "bool" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "owner", "type": "address" }, { "internalType": "address", "name": "operator", "type": "address" } ], "name": "isApprovedForAll", "outputs": [ { "internalType": "bool", "name": "", "type": "bool" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "lastToken", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "name", "outputs": [ { "internalType": "string", "name": "", "type": "string" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "tokenId", "type": "uint256" } ], "name": "ownerOf", "outputs": [ { "internalType": "address", "name": "", "type": "address" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "redeemer", "type": "address" }, { "components": [ { "internalType": "uint256", "name": "minPrice", "type": "uint256" }, { "internalType": "string", "name": "uri", "type": "string" }, { "internalType": "bytes", "name": "signature", "type": "bytes" } ], "internalType": "struct Pixel.NFTVoucher", "name": "voucher", "type": "tuple" } ], "name": "redeem", "outputs": [ { "internalType": "uint32", "name": "", "type": "uint32" } ], "stateMutability": "payable", "type": "function" }, { "inputs": [ { "internalType": "bytes32", "name": "role", "type": "bytes32" }, { "internalType": "address", "name": "account", "type": "address" } ], "name": "renounceRole", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "bytes32", "name": "role", "type": "bytes32" }, { "internalType": "address", "name": "account", "type": "address" } ], "name": "revokeRole", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "from", "type": "address" }, { "internalType": "address", "name": "to", "type": "address" }, { "internalType": "uint256", "name": "tokenId", "type": "uint256" } ], "name": "safeTransferFrom", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "from", "type": "address" }, { "internalType": "address", "name": "to", "type": "address" }, { "internalType": "uint256", "name": "tokenId", "type": "uint256" }, { "internalType": "bytes", "name": "_data", "type": "bytes" } ], "name": "safeTransferFrom", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "operator", "type": "address" }, { "internalType": "bool", "name": "approved", "type": "bool" } ], "name": "setApprovalForAll", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "bytes4", "name": "interfaceId", "type": "bytes4" } ], "name": "supportsInterface", "outputs": [ { "internalType": "bool", "name": "", "type": "bool" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "symbol", "outputs": [ { "internalType": "string", "name": "", "type": "string" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "tokenId", "type": "uint256" } ], "name": "tokenURI", "outputs": [ { "internalType": "string", "name": "", "type": "string" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "totalSupply", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "from", "type": "address" }, { "internalType": "address", "name": "to", "type": "address" }, { "internalType": "uint256", "name": "tokenId", "type": "uint256" } ], "name": "transferFrom", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "withdraw", "outputs": [], "stateMutability": "nonpayable", "type": "function" }]
-const contractAddress = '0xD3b89B132EA35ef82d1BA443F29df1629b0CE6bB';
+function require(script) {
+    $.ajax({
+        url: script,
+        dataType: "script",
+        async: false,           // <-- This is the key
+        success: function () {
+            // all good...
+        },
+        error: function () {
+            throw new Error("Could not load script " + script);
+        }
+    });
+}
 
-walletAddr = '0xa5A400D0096AFD66438139c52072dd89306D8da5';
+require("/static/pickpix/contract.js");
 
 const container = document.getElementById("container");
 var ethereum;
 var accounts;
 var currentTokenPrice;
+var showingOwned = false;
+var imageSize = 2050.0;
+var maxCols = 224.0;
 
 var chainIdName = {
     "0x1" : "Ethereum Main Network (Mainnet)",
@@ -24,15 +36,11 @@ function makeRows(rows, cols) {
     container.style.setProperty('--grid-cols', cols);
     for (c = 0; c < (rows * cols); c++) {
         let cell = document.createElement("div");
-        //cell.innerText = (c + 1);
-        /*if (usedPixels.includes(c)) {
-            cell.style.backgroundColor = "#00FF00";
-        }*/
         container.appendChild(cell).className = "grid-item";
     };
 };
 
-function connectWallet() {
+async function connectWallet() {
     if (typeof window.ethereum == 'undefined') {
         console.log('MetaMask is not installed.');
         return;
@@ -41,12 +49,14 @@ function connectWallet() {
     ethereum = window.ethereum;
     ethereum.on('accountsChanged', onAccountsUpdated);
 
-    init();
+    await init();
     updateTokenPrice();
+    toggleOwnedTokens();
 }
 
 async function init() {
     if (typeof ethereum == 'undefined' || !ethereum.isConnected()) {
+        console.log('Web3 provider not installed or not connected');
         return;
     }
 
@@ -65,46 +75,138 @@ function getChainNameFromId(id) {
 function onAccountsUpdated(updatedAccounts) {
     accounts = updatedAccounts;
     console.log("Accounts updated: " + accounts[0]);
+    console.log("Accounts updated (all): " + accounts);
     chainName = getChainNameFromId(ethereum.chainId);
-    details = chainName + " (" + accounts[0] + ")";
+    var acct_trunc = accounts[0].slice(0, 6) + "..." + accounts[0].slice(-4);
+    var details = chainName + " (" + acct_trunc + ")";
     document.getElementById('account').textContent = details;
 }
 
-function requestVoucher() {
-    $.ajax({url: '/pickpix/voucher' })
-    .then( response =>
-        var parsed = JSON.parse(response);
-        console.log(response);
-        console.log(parsed);
-    )
+async function requestVoucher() {
+    var response;
+    response = await $.get('/pickpix/voucher');
+    console.log("response: " + response);
+    return response;
 }
 
-function redeemToken() {
+async function getTokenPrice() {
+    var response;
+    response = await $.get('/pickpix/token_price');
+    console.log("response: " + response.token_price);
+    return response;
+}
+
+async function toggleOwnedTokens() {
+    if (showingOwned) {
+        var img_toggle = document.getElementById('show_owned_toggle');
+        img_toggle.src = '/static/pickpix/eye.png';
+        var markers = document.getElementsByClassName('token-marker');
+        for (i=0;i<markers.length;i++) {
+            markers[i].parentNode.removeChild(markers[i]);
+        }
+    } else {
+        var balance = await getOwnerBalance(accounts[0]);
+        var img_toggle = document.getElementById('show_owned_toggle');
+        var gridSize = imageSize / maxCols;
+        // show the pixels
+        tokens = await getTokensByOwner(accounts[0], balance);
+        //console.log(tokens);
+        pixels = await getPixelsByTokens(tokens);
+        //console.log(pixels);
+                var img = document.getElementById("secretImg");
+        for (i = 0; i < pixels.length; i++) {
+            var pixel = pixels[i];
+            //var xCoord = (pixel % maxCols) * gridSize;
+            //var yCoord = (pixel / maxCols) * gridSize;
+            var col = (pixel % maxCols);
+            var row = parseInt(pixel / maxCols);
+
+            var tokenURI = await getTokenURI(tokens[i]);
+            var arrow = document.createElement("div");
+            arrow.style.width = gridSize*2+"px";
+            arrow.style.height = gridSize*2+"px";
+            arrow.style.left = (((col+1.1)/224) * 100)+"%";
+            arrow.style.top = (((row+1.1)/224) * 100)+"%";
+            arrow.style.position = "absolute";
+            arrow.style.cursor = "pointer";
+            arrow.classList.add("token-marker");
+            arrow.setAttribute("onClick", "window.open('"+tokenURI+"')");
+            img = document.createElement('img');
+            img.src = '/static/pickpix/box_arrow.png';
+            arrow.appendChild(img);
+            container.appendChild(arrow);
+        }
+
+        img_toggle.src = '/static/pickpix/eye_slash.png';
+    }
+
+    showingOwned = !showingOwned;
+}
+
+async function getTokenURI(tokenId) {
+    let web3 = new Web3(ethereum);
+    let contract = new web3.eth.Contract(contractABI, contractAddress);
+
+    return await contract.methods.tokenURI(tokenId).call({});
+}
+
+async function getOwnerBalance(owner) {
+    let web3 = new Web3(ethereum);
+    let contract = new web3.eth.Contract(contractABI, contractAddress);
+
+    return await contract.methods.balanceOf(accounts[0]).call({});
+}
+
+async function getTokenOfOwnerByIndex(owner, index) {
+    let web3 = new Web3(ethereum);
+    let contract = new web3.eth.Contract(contractABI, contractAddress);
+    return await contract.methods.tokenOfOwnerByIndex(owner, index).call({});
+}
+
+async function getTokensByOwner(owner, balance) {
+    var tokens = [];
+    for (i = 0; i < balance; i++) {
+        tokens.push(await getTokenOfOwnerByIndex(owner, i));
+    }
+    return tokens;
+}
+
+async function getPixelByToken(token) {
+    let web3 = new Web3(ethereum);
+    let contract = new web3.eth.Contract(contractABI, contractAddress);
+    return await contract.methods.pixelIdFromTokenId(token).call({});
+}
+
+async function getPixelsByTokens(tokens) {
+    var pixels = [];
+    for (i = 0; i < tokens.length; i++) {
+        pixels.push(await getPixelByToken(tokens[i]));
+    }
+    return pixels;
+}
+
+async function redeemToken() {
     if (typeof ethereum == 'undefined') {
         console.log("Wallet is not connected.");
-        return;
-    }
-    if (currentTokenPrice == null) {
-        console.log("Connect wallet for current token price.");
         return;
     }
     if (accounts == null) {
         console.log("Wait for accounts to be updated")
     }
 
-    requestVoucher();
-    return;
-
     let web3 = new Web3(ethereum);
     let contract = new web3.eth.Contract(contractABI, contractAddress);
 
-    contract.methods.redeem(accounts[0], requestVoucher()).send({from: walletAddr})
+    voucher = await requestVoucher();
+
+    console.log(voucher.minPrice);
+    console.log(voucher['signature']);
+    voucher_tuple = [voucher.minPrice.toString(), voucher.uri, web3.utils.hexToBytes(voucher.signature)];
+
+    contract.methods.redeem(accounts[0], voucher_tuple).send({from: accounts[0], value: voucher.minPrice})
     .on('transactionHash', function(hash) {
-        //console.log(hash);
     })
     .on('confirmation', function(confirmationNumber, receipt) {
-        //console.log(confirmationNumber);
-        //console.log(receipt);
     })
     .on('receipt', function(receipt) {
         //console.log(receipt);
@@ -119,54 +221,17 @@ function redeemToken() {
     });
 }
 
-function postToken(owner, tokenIds) {
-    var http;
+async function updateTokenPrice() {
+    result = await getTokenPrice();
 
-    if (!window.XMLHttpRequest) {
-        console.log("Need browser support for window.XMLHttpRequest?");
-        return;
-    }
-
-    http = new XMLHttpRequest();
-    http.open("POST", "/pickpix/token/", true);
-    http.setRequestHeader("Accept", "application/json");
-    http.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
-
-    http.send(JSON.stringify({'owner' : owner, 'tokenIds' : tokenIds}));
+    document.getElementById('currentTokenPrice').textContent = "1 Pixel = " + result.token_price + " AVAX";
 }
 
-function updateTokenPrice() {
-    if (typeof ethereum == 'undefined') {
-        console.log("Wallet is not connected.");
-        return;
-    }
-
-    let web3 = new Web3(ethereum);
-    let contract = new web3.eth.Contract(contractABI, contractAddress);
-
-    contract.methods.getCurrentPrice().call({from: walletAddr})
-    .then(function(result) {
-        currentTokenPrice = result / 10**18;
-        document.getElementById('currentTokenPrice').textContent = currentTokenPrice;
-    });
-
-}
-
-function updateMagicNumber() {
-    if (typeof ethereum == 'undefined') {
-        console.log("Wallet is not connected.");
-        return;
-    }
-
-    let web3 = new Web3(ethereum);
-    let contract = new web3.eth.Contract(contractABI, contractAddress);
-
-    contract.methods.magicNumber().call({from: walletAddr})
-    .then(function(result) {
-        console.log("Got the magic number: " + result);
-        document.getElementById('magicNumber').textContent = result;
-    });
-}
-
-//init();
-makeRows(50, 50);
+/*window.addEventListener('load', () => {
+        if (typeof web3 !== 'undefined') {
+                connectWallet();
+                toggleOwnedTokens();
+        } else {
+                console.log('No Web3 Detected... using HTTP Provider');
+        }
+});*/

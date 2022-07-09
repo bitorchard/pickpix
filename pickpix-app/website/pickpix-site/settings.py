@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-@#o%lh_q67z$xh3nd05*tm%zr_-f8q9v$tlmq*3kx^nc!ezocy'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['pickpix', 'pickpix.local', '192.168.68.7']
 

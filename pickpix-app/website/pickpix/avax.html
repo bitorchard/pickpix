@@ -12,16 +12,43 @@
 </head>
 
 <body>
-    <div id="dashboard" style="line-height: 0px">
-        <p>
-        <span class="dashboard" id="account"></span>
-         [<span class="notes" id="currentTokenPrice"></span>]
-        </p>
-        <button class="dashboard" onclick="connectWallet()">Connect Wallet</button><span onclick="mintToken()" style="cursor: pointer; font-size: 20px">&#x1F5D8</span>
+    <div id="header_elements" style="position: relative; display: flex; justify-content: space-between">
+        <div>
+            <div style="font-family: Courier New; width: 400px;">
+            <p>
+            <img src="{% static 'pickpix/avax.png' %}"> Avalanche
+            <p style="font-family: Courier New">How does it work?</p>
+            <p> 1. Setup Metamask with the Avalanche network described <a href="https://support.avax.network/en/articles/4626956-how-do-i-set-up-metamask-on-avalanche">here</a></p>
+            <p> 2. Buy a "pixel" with AVAX</p>
+            <p> 3. Every 5000 pixels purchased triggers a lottery drawing of $1000 USD!</p>
+            <p> ** Remember to "Connect Wallet" to see which pixels you've purchased</p>
+            </p>
+            </div>
+        </div>
+            <div id="dashboard" style="line-height: 0px">
+                <p>
+				<span class="dashboard" id="account"></span>
+                 [<span class="notes" id="currentTokenPrice"></span>]
+                </p>
+            <div style="float: right;">
+                <div class="inlined-middle">
+                <button class="dashboard" onclick="connectWallet()">Connect Wallet</button>
+                </div>
+                <div class="inlined-middle">
+                <img style="cursor: pointer;" src={% static 'pickpix/buy_pixel_token.png' %} onclick="redeemToken()">
+                </div>
+                <div class="inlined-middle">
+                </div>
+            </div>
+        </div>
     </div>
-    <div style="position: relative; width: 95vw; height: 95vw; z-index: 2; text-align: center;" id="container">
-        <img style="position: absolute; z-index: 1; display: block; width: 95vw; height:95vw; margin: 1px;" src="{% static 'pickpix/secret_img.jpg' %}"/>
-        <!--<img style="position:fixed; z-index: 1; width: 94.8vw; height: 94.8vw; padding: 1px; object-fit: ;" src="{% static 'pickpix/secret_img.jpg' %}"/> -->
+    <!--<div id="img_header" style="position: relative; display: block; width: 100%;">
+        <div style="position: relative; right: 0px; float: right;">
+            <img id="show_owned_toggle" onclick="toggleOwnedTokens()" style="cursor: pointer;" src="{% static 'pickpix/eye.png' %}">
+        </div>
+    </div>-->
+    <div id="container" style="position: relative; width: 100%; height: auto; aspect-ratio: 1/1;">
+        <img id="secretImg" style="height 100%; width: 100%; object-fit: contain;" src="{% static 'pickpix/secret_img.jpg' %}"/>
     </div>
 </body>
 </html>

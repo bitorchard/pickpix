@@ -1,5 +1,9 @@
 from django.db import models
 
+class GlobalConfig(models.Model):
+    name = models.CharField(max_length=20)
+    value = models.CharField(max_length=200)
+
 class PickToken(models.Model):
     owner = models.CharField(max_length=200)
     token_id = models.CharField(max_length=200)
