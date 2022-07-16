@@ -16,7 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
+def default_redirect(request):
+    return HttpResponseRedirect('/pickpix/')
+
 urlpatterns = [
+    path('', default_redirect, name='default'),
     path('pickpix/', include('pickpix.urls')),
     path('admin/', admin.site.urls),
 ]

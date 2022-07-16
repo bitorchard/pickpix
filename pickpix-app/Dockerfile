@@ -1,4 +1,4 @@
-FROM apache-django-base:latest
+FROM apache-django-base:local
 
 SHELL ["/bin/bash", "-c"]
 
@@ -21,7 +21,7 @@ RUN python3 manage.py runmodwsgi \
     --https-port=443 \
     --ssl-certificate-file=/etc/mod_wsgi-express-80/ssl/localhost.crt \
     --ssl-certificate-key-file=/etc/mod_wsgi-express-80/ssl/localhost.key \
-    --server-name=pickpix.local
+    --server-name=pickpix.net
 
 WORKDIR /pickpix-app/website/static/pickpix
 
@@ -34,8 +34,8 @@ RUN wget https://code.jquery.com/jquery-3.6.0.min.js -O jquery.js
 #RUN npm install hydraweb3-js
 #RUN browserify deps.js > bundle.js
 
-RUN mkdir /etc/mod_wsgi-express-80/ssl 
-RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/mod_wsgi-express-80/ssl/localhost.key -out /etc/mod_wsgi-express-80/ssl/localhost.crt -subj "/C=US/ST=PaloAlto/L=PaloAlto/O=ABC/OU=ABC/CN=pickpix.local"
+#RUN mkdir /etc/mod_wsgi-express-80/ssl 
+#RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/mod_wsgi-express-80/ssl/localhost.key -out /etc/mod_wsgi-express-80/ssl/localhost.crt -subj "/C=US/ST=PaloAlto/L=PaloAlto/O=ABC/OU=ABC/CN=pickpix.local"
 
 RUN echo $'\n\
 Alias /static/ /pickpix-app/website/static/ \n\
@@ -44,4 +44,8 @@ Alias /static/ /pickpix-app/website/static/ \n\
 </Directory> \n' \
 >> /etc/mod_wsgi-express-80/httpd.conf
 
-RUN chown -R www-data:www-data /pickpix-app/website/static
+RUN useradd steve
+# ALSO SET PASSWORD?
+
+RUN chown -R steve:www-data /pickpix-app/website/static
+RUN chmod 750 -R /pickpix-app/website/static

@@ -29,13 +29,13 @@ spec:
     spec:
       hostname: pickpix
       containers:
-      - image: pickpix-app:latest
+      - image: pickpix-app:123
         name: pickpix-app
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 80
-          hostPort: 8080
+          hostPort: 80
         - containerPort: 443
-          hostPort: 9443
+          hostPort: 443
         command: ["/pickpix-app/start_httpd.sh"]
         #command: ["tail", "-f", "/dev/null"]

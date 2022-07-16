@@ -2,10 +2,8 @@
 
 <html>
 <head>
+    <title>Pixel</title>
     <link rel="stylesheet" href="{% static 'pickpix/main.css' %}">
-    <script>
-        var usedPixels = {{ used_pixels }};
-    </script>
     <script src="{% static 'pickpix/web3.js' %}"></script>
     <script src="{% static 'pickpix/jquery.js' %}"></script>
     <script src="{% static 'pickpix/avax.js' %}" defer></script>
@@ -20,7 +18,7 @@
             <p style="font-family: Courier New">How does it work?</p>
             <p> 1. Setup Metamask with the Avalanche network described <a href="https://support.avax.network/en/articles/4626956-how-do-i-set-up-metamask-on-avalanche">here</a></p>
             <p> 2. Buy a "pixel" with AVAX</p>
-            <p> 3. Every 5000 pixels purchased triggers a lottery drawing of $1000 USD!</p>
+            <p> 3. Every 5000 pixels purchased triggers a lottery drawing of $? USD!</p>
             <p> ** Remember to "Connect Wallet" to see which pixels you've purchased</p>
             </p>
             </div>

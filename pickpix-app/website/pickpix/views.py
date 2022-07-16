@@ -5,6 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.db.models import IntegerField
 from django.db.models.functions import Cast
 
+import traceback
 import os
 import pwd
 import grp
@@ -52,9 +53,10 @@ class Voucher:
 
 def index(request):
     template = loader.get_template('pickpix/avax.html')
-    pixel_ids = [p.pixel_index for p in Pixel.objects.all()]
-    json_pixel_ids = json.dumps(pixel_ids)
-    context = {'used_pixels' : json_pixel_ids}
+    #pixel_ids = [p.pixel_index for p in Pixel.objects.all()]
+    #json_pixel_ids = json.dumps(pixel_ids)
+    #context = {'used_pixels' : json_pixel_ids}
+    context = {}
     check_latest_token2()
     return HttpResponse(template.render(context, request))
 
@@ -149,18 +151,36 @@ def check_latest_token2():
     csum_address = Web3.toChecksumAddress(contract_json['address'])
     contract = w3.eth.contract(abi=contract_json['abi'], address=csum_address);
 
-    last_token = contract.functions.lastToken().call()
-
-    used_pixels = lcg_pixels(last_token)
+    live_last_token = contract.functions.lastToken().call()
+    db_last_token = 0
+    db_last_pixel = 0
+    used_pixels = lcg_pixels(db_last_token, live_last_token, db_last_pixel)
     render_secret_image2(used_pixels)
+    #live_last_pixel = used_pixels[-1]
+    #GlobalConfig(name='last_token', value=str(live_last_token)).save()
+    #GlobalConfig(name='last_pixel', value=str(last_pixel)).save()
 
-def lcg_pixels(last_token):
+    #try:
+    #    db_last_token = int(GlobalConfig.objects.get(name='last_token'))
+    #    if db_last_token == live_last_token:
+    #        return
+    #    db_last_pixel = int(GlobalConfig.objects.get(name='last_pixel'))
+    #except GlobalConfig.DoesNotExist, ValueError:
+    #    db_last_token = 0
+    #    db_last_pixel = 0
+    #    render_secret_image2([])
+    #    GlobalConfig(name='last_token', value=str(live_last_token)).save()
+    #    GlobalConfig(name='last_pixel', value=str(last_pixel)).save()
+    #except:
+    #    pass
+
+def lcg_pixels(db_last_token, live_last_token, db_last_pixel):
     pixels = []
-    last_pixel = 0
+    last_pixel = db_last_pixel
     lcg_c_value = 6666
     a_big_prime = 50177
     max_pixels = 50176 # 224^2
-    for t in range(1, last_token+1):
+    for t in range(db_last_token, live_last_token):
         last_pixel = (last_pixel + lcg_c_value) % a_big_prime
         if last_pixel >= max_pixels:
             last_pixel = (last_pixel + lcg_c_value) % a_big_prime
@@ -185,9 +205,9 @@ def draw_mask(used_pixels, size=2050, rows=224, cols=224):
 
     overlay.save(mask_file)
 
-    uid = pwd.getpwnam('www-data')[2]
+    uid = pwd.getpwnam('steve')[2]
     gid = grp.getgrnam('www-data')[2]
-    os.chown(mask_file, uid, gid)
+    #os.chown(mask_file, uid, gid)
     return overlay
 
 def draw_grid(size=2050, rows=224, cols=224):
@@ -215,9 +235,9 @@ def draw_grid(size=2050, rows=224, cols=224):
 
     grid.save(grid_file)
 
-    uid = pwd.getpwnam('www-data')[2]
+    uid = pwd.getpwnam('steve')[2]
     gid = grp.getgrnam('www-data')[2]
-    os.chown(grid_file, uid, gid)
+    #os.chown(grid_file, uid, gid)
     return grid
 
 def render_secret_image2(used_pixels):
@@ -233,9 +253,9 @@ def render_secret_image2(used_pixels):
     secret = secret.convert('RGB')
     secret.save(secret_file_render)
 
-    uid = pwd.getpwnam('www-data')[2]
+    uid = pwd.getpwnam('steve')[2]
     gid = grp.getgrnam('www-data')[2]
-    os.chown(secret_file_render, uid, gid)
+    #os.chown(secret_file_render, uid, gid)
 
 def check_latest_token():
     w3 = Web3(Web3.HTTPProvider(PROVIDER_URL))
@@ -299,9 +319,9 @@ def render_secret_image():
     ice_cream = ice_cream.convert('RGB')
     ice_cream.save('static/pickpix/secret_img.jpg')
 
-    uid = pwd.getpwnam('www-data')[2]
+    uid = pwd.getpwnam('steve')[2]
     gid = grp.getgrnam('www-data')[2]
-    os.chown('static/pickpix/secret_img.jpg', uid, gid)
+    #os.chown('static/pickpix/secret_img.jpg', uid, gid)
 
 def insert_new_token(token_data):
     token_owner = token_data['owner']
