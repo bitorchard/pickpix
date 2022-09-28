@@ -28,7 +28,8 @@ var chainIdName = {
     "0x4" : "Rinkeby Test Network",
     "0x5" : "Goerli Test Network",
     "0x2a" : "Kovan Test Network",
-    "0xa869" : "Avalanche FUJI C-Chain"
+    "0xa869" : "Avalanche FUJI C-Chain",
+    "0xa86a" : "Avalanche Network"
 }
 
 function makeRows(rows, cols) {
@@ -50,11 +51,14 @@ async function connectWallet() {
     ethereum.on('accountsChanged', onAccountsUpdated);
 
     await init();
-    updateTokenPrice();
-    toggleOwnedTokens();
+    //updateTokenPrice();
+    //toggleOwnedTokens();
 }
 
 async function init() {
+    updateTokenPrice();
+    document.getElementById('contractAddress').textContent = "Contract Address: " + contractAddress;
+
     if (typeof ethereum == 'undefined' || !ethereum.isConnected()) {
         console.log('Web3 provider not installed or not connected');
         return;
@@ -62,6 +66,7 @@ async function init() {
 
     updatedAccounts = await ethereum.request({ method: 'eth_requestAccounts' });
     onAccountsUpdated(updatedAccounts);
+    toggleOwnedTokens();
 }
 
 function getChainNameFromId(id) {
@@ -97,14 +102,15 @@ async function getTokenPrice() {
 }
 
 async function toggleOwnedTokens() {
-    if (showingOwned) {
-        var img_toggle = document.getElementById('show_owned_toggle');
-        img_toggle.src = '/static/pickpix/eye.png';
-        var markers = document.getElementsByClassName('token-marker');
-        for (i=0;i<markers.length;i++) {
-            markers[i].parentNode.removeChild(markers[i]);
-        }
-    } else {
+//    if (showingOwned) {
+//        var img_toggle = document.getElementById('show_owned_toggle');
+        //img_toggle.src = '/static/pickpix/eye.png';
+//        var markers = document.getElementsByClassName('token-marker');
+//        for (i=0;i<markers.length;i++) {
+//            markers[i].parentNode.removeChild(markers[i]);
+//        }
+//    } else if (accounts != null) {
+    if (accounts != null) {
         var balance = await getOwnerBalance(accounts[0]);
         var img_toggle = document.getElementById('show_owned_toggle');
         var gridSize = imageSize / maxCols;
@@ -137,7 +143,7 @@ async function toggleOwnedTokens() {
             container.appendChild(arrow);
         }
 
-        img_toggle.src = '/static/pickpix/eye_slash.png';
+        //img_toggle.src = '/static/pickpix/eye_slash.png';
     }
 
     showingOwned = !showingOwned;
@@ -226,6 +232,8 @@ async function updateTokenPrice() {
 
     document.getElementById('currentTokenPrice').textContent = "1 Pixel = " + result.token_price + " AVAX";
 }
+
+init();
 
 /*window.addEventListener('load', () => {
         if (typeof web3 !== 'undefined') {

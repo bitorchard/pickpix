@@ -22,17 +22,17 @@ from eth_account.messages import encode_structured_data
 
 log = logging.getLogger(__name__)
 
-CHAIN_ID = 43113
+CHAIN_ID = 43114
 WEI_PER_AVAX = 10**18
 MIN_PRICE = 0.1
 MAX_PIXEL_INDEX = 2500
-PROVIDER_URL = 'https://api.avax-test.network/ext/bc/C/rpc'
+PROVIDER_URL = 'https://api.avax.network/ext/bc/C/rpc'
 CONTRACT_JSON_FILE = 'pickpix/contract.json'
+KEYS_JSON_FILE = 'pickpix/keys.json'
 CACHED_VOUCHER_KEY = 'CACHED_VOUCHER'
 SIGNING_DOMAIN = "Pixel-Voucher"
 SIGNATURE_VERSION = "1"
 CACHED_VOUCHER_EXPIRATION_SECS = 30*60
-PRIVATE_KEY = "0xe607298786fc31a8606539101856730258f0192f757664ca7198902e1d3ac713"
 
 class Voucher:
     def __init__(self, uri, min_price):
@@ -107,6 +107,8 @@ def generate_signature(min_price, ipns_uri):
 
     with open(CONTRACT_JSON_FILE) as f:
         contract_json = json.load(f)
+    with open(KEYS_JSON_FILE) as f:
+        keys_json = json.load(f)
 
     data = {
         "types" : {
@@ -118,7 +120,7 @@ def generate_signature(min_price, ipns_uri):
             ],
             "NFTVoucher" : [
                 { "name": "minPrice", "type": "uint256" },
-                { "name": "uri", "type": "string" },
+                #{ "name": "uri", "type": "string" },
             ],
         },
         "domain" : {
@@ -130,12 +132,12 @@ def generate_signature(min_price, ipns_uri):
         "primaryType": "NFTVoucher",
         "message" : {
             "minPrice" : min_price,
-            "uri" : ipns_uri,
+            #"uri" : ipns_uri,
         }
     }
 
     signable = encode_structured_data(data)
-    signed = w3.eth.account.sign_message(signable, PRIVATE_KEY)
+    signed = w3.eth.account.sign_message(signable, keys_json['private_key'])
 
     return signed.signature.hex()
 

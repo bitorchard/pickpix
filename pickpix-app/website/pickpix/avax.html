@@ -12,30 +12,32 @@
 <body>
     <div id="header_elements" style="position: relative; display: flex; justify-content: space-between">
         <div>
-            <div style="font-family: Courier New; width: 400px;">
+            <div style="font-family: Courier New; width: 600px;">
             <p>
             <img src="{% static 'pickpix/avax.png' %}"> Avalanche
             <p style="font-family: Courier New">How does it work?</p>
-            <p> 1. Setup Metamask with the Avalanche network described <a href="https://support.avax.network/en/articles/4626956-how-do-i-set-up-metamask-on-avalanche">here</a></p>
-            <p> 2. Buy a "pixel" with AVAX</p>
-            <p> 3. Every 5000 pixels purchased triggers a lottery drawing of $? USD!</p>
+            <p> 1. Setup Metamask with the Avalanche network described <a href="https://support.avax.network/en/articles/4626956-how-do-i-set-up-metamask-on-avalanche" target="_blank" rel="noopener noreferrer">here</a></p>
+            <p> 2. Buy a Pixel NFT with AVAX</p>
+            <p> 3. Each purchase incrementally reveals the secret image to the world. See your purchased Pixels labeled with this <a href="https://bafybeidmyu4nt7qfx62coupmzhaq6pfjiafgximgrqxrly7kjrcw5q74g4.ipfs.nftstorage.link/1.jpg" target="_blank" rel="noopener noreferrer"><img src="{% static 'pickpix/box_arrow.png' %}"></a></p>
+            <!--<p> 3. Every 5000 pixels purchased triggers an AVAX giveaway to PXL owners!</p> -->
             <p> ** Remember to "Connect Wallet" to see which pixels you've purchased</p>
             </p>
             </div>
         </div>
-            <div id="dashboard" style="line-height: 0px">
-                <p>
-				<span class="dashboard" id="account"></span>
-                 [<span class="notes" id="currentTokenPrice"></span>]
-                </p>
+        <div id="dashboard" style="width: 900px; line-height: 0px; background-image: url('{% static 'pickpix/header_main.jpg' %}'); background-size: cover; background-repeat: no-repeat;">
             <div style="float: right;">
-                <div class="inlined-middle">
-                <button class="dashboard" onclick="connectWallet()">Connect Wallet</button>
+                <div class="inlined-middle" style="width: 300px; margin-left: 0; margin-right: 0">
+                    <p><span class="dashboard" id="account"></span>&emsp;
                 </div>
-                <div class="inlined-middle">
+                <div class="inlined-middle" style="width: 160px; margin-left: 0; margin-right: 0">
+                    <button class="dashboard" style="font-size: 18px;" onclick="connectWallet()">Connect Wallet</button></p>
+                </div>
+                <p><span class="notes" id="contractAddress"></span></p>
+            </div>
+            <div style="width: 150px; margin-top: 10px; margin-left: auto; margin-right: 0;">
                 <img style="cursor: pointer;" src={% static 'pickpix/buy_pixel_token.png' %} onclick="redeemToken()">
-                </div>
-                <div class="inlined-middle">
+                <p><span class="notes" id="currentTokenPrice"></span></p>
+                <div style="width: 150px; margin-left: auto; margin-right: 0;">
                 </div>
             </div>
         </div>
