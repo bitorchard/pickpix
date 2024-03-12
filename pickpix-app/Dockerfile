@@ -46,11 +46,11 @@ RUN cp /pickpix-app/website/ssl/ecc.key /etc/mod_wsgi-express-80/ssl/ecc.key
 
 # Hack to make pod DNS work correctly
 
-RUN echo $'\
-nameserver 10.1.56.51 \n\
-search default.svc.cluster.local svc.cluster.local cluster.local \n\
-options ndots:5 \n' \
-> /etc/resolv.conf
+#RUN echo $'\
+#nameserver 10.1.56.51 \n\
+#search default.svc.cluster.local svc.cluster.local cluster.local \n\
+#options ndots:5 \n' \
+#> /etc/resolv.conf
 
 # Setup directory permissions
 
@@ -58,6 +58,7 @@ RUN useradd steve
 
 RUN chown -R steve:www-data /pickpix-app/website/static
 RUN chmod 640 -R /pickpix-app/website/static/pickpix
+RUN chmod 750 /pickpix-app/website/static/pickpix
 RUN chmod g+wx /pickpix-app/website/static/pickpix/images
 
 RUN touch /pickpix-app/website/info.log
