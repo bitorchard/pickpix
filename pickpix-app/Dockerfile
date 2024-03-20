@@ -44,14 +44,6 @@ RUN mkdir /etc/mod_wsgi-express-80/ssl
 RUN cp /pickpix-app/website/ssl/pickpix_net.crt /etc/mod_wsgi-express-80/ssl/pickpix_net.crt
 RUN cp /pickpix-app/website/ssl/ecc.key /etc/mod_wsgi-express-80/ssl/ecc.key
 
-# Hack to make pod DNS work correctly
-
-#RUN echo $'\
-#nameserver 10.1.56.51 \n\
-#search default.svc.cluster.local svc.cluster.local cluster.local \n\
-#options ndots:5 \n' \
-#> /etc/resolv.conf
-
 # Setup directory permissions
 
 RUN useradd steve

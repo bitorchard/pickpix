@@ -2,13 +2,9 @@
 pragma solidity ^0.8.0;
 pragma abicoder v2; // required to accept structs as function parameters
 
-//import "hardhat/console.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
-//import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-//import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
-//import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import "@openzeppelin/contracts/utils/cryptography/draft-EIP712.sol";
 import "@openzeppelin/contracts/utils/math/SafeCast.sol";
 
@@ -48,7 +44,6 @@ contract Pixel is ERC721Enumerable, EIP712, AccessControl {
         view
         returns(string memory)
     {
-        //require(_tokenId >=1 && _tokenId <= _maxSupply);
         return string(
             abi.encodePacked(
                 imagesBaseURI,

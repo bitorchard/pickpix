@@ -13,4 +13,3 @@ spec:
       name: https
   selector:
     app: pickpix-app
-      #clusterIP: None

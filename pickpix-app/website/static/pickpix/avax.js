@@ -51,8 +51,6 @@ async function connectWallet() {
     ethereum.on('accountsChanged', onAccountsUpdated);
 
     await init();
-    //updateTokenPrice();
-    //toggleOwnedTokens();
 }
 
 async function init() {
@@ -102,28 +100,15 @@ async function getTokenPrice() {
 }
 
 async function toggleOwnedTokens() {
-//    if (showingOwned) {
-//        var img_toggle = document.getElementById('show_owned_toggle');
-        //img_toggle.src = '/static/pickpix/eye.png';
-//        var markers = document.getElementsByClassName('token-marker');
-//        for (i=0;i<markers.length;i++) {
-//            markers[i].parentNode.removeChild(markers[i]);
-//        }
-//    } else if (accounts != null) {
     if (accounts != null) {
         var balance = await getOwnerBalance(accounts[0]);
         var img_toggle = document.getElementById('show_owned_toggle');
         var gridSize = imageSize / maxCols;
         // show the pixels
         tokens = await getTokensByOwner(accounts[0], balance);
-        //console.log(tokens);
         pixels = await getPixelsByTokens(tokens);
-        //console.log(pixels);
-                var img = document.getElementById("secretImg");
         for (i = 0; i < pixels.length; i++) {
             var pixel = pixels[i];
-            //var xCoord = (pixel % maxCols) * gridSize;
-            //var yCoord = (pixel / maxCols) * gridSize;
             var col = (pixel % maxCols);
             var row = parseInt(pixel / maxCols);
 
@@ -142,8 +127,6 @@ async function toggleOwnedTokens() {
             arrow.appendChild(img);
             container.appendChild(arrow);
         }
-
-        //img_toggle.src = '/static/pickpix/eye_slash.png';
     }
 
     showingOwned = !showingOwned;
@@ -215,7 +198,6 @@ async function redeemToken() {
     .on('confirmation', function(confirmationNumber, receipt) {
     })
     .on('receipt', function(receipt) {
-        //console.log(receipt);
         tokenId = receipt.events.Transfer.returnValues["tokenId"];
         console.log("mintToken succeeded, token: " + tokenId);
         postToken(walletAddr, [tokenId]);
@@ -235,11 +217,3 @@ async function updateTokenPrice() {
 
 init();
 
-/*window.addEventListener('load', () => {
-        if (typeof web3 !== 'undefined') {
-                connectWallet();
-                toggleOwnedTokens();
-        } else {
-                console.log('No Web3 Detected... using HTTP Provider');
-        }
-});*/
