@@ -1,31 +1,126 @@
-:root {
-    --grid-cols: 1;
-    --grid-rows: 1;
+body, h1, ol, p, button, img {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    box-sizing: border-box;
 }
 
-.grid-item {
-    padding: 0em;
-    border: 1px solid #ddd;
-    background-color: transparent;
+body {
+    font-family: 'Roboto Mono';
+    line-height: 1.6;
+    color: #333;
+    background-color: #fff;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Header */
+.header {
+    background: linear-gradient(45deg, #6a3093, #a044ff, #a1ffce);
+    color: #fff;
+    padding: 20px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-bottom: 3px solid #ddd;
+}
+
+.header div,
+.header button {
+    margin: 0 10px;
+}
+
+.header button {
+    white-space: nowrap;
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 10px 20px;
     text-align: center;
-    font-size: 0.5vw;
-    aspect-ratio: 1;
-    z-index: 3;
-}
-
-.dashboard {
-    font-family: "Courier New";
-    font-size: 14px;
-    font-weight: bold;
-    vertical-align: middle;
-}
-
-.notes {
-    font-family: "Courier New";
-    font-size: 12px;
-}
-
-.inlined-middle {
+    text-decoration: none;
     display: inline-block;
-    vertical-align: middle;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.header button:hover {
+    background-color: #45a049;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.header-section {
+    width: 50%;
+    display: flex;
+    flex-direction: row;
+}
+
+.right-bound {
+    justify-content : flex-end;
+}
+
+.left-bound {
+    align-items: flex-start;
+}
+
+.info-text-field {
+    white-space: nowrap;
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+#networkInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Main Content */
+.main-content {
+    padding: 20px;
+}
+
+.how-it-works {
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 15px;
+}
+
+.how-it-works h1 {
+    margin-bottom: 10px;
+}
+
+.how-it-works ol {
+    list-style-position: inside;
+    padding-left: 20px;
+}
+
+.how-it-works ol li {
+    margin-bottom: 10px;
+}
+
+.image-reveal {
+    position: relative;
+    margin-top: 30px;
+    height: 100%;
+    width: 100%;
+}
+
+.secret-img {
+    display: block;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    object-fit: contain;
+    height: 100%;
+    width: 100%;
+}
+
+@media (max-width: 768px) {
 }

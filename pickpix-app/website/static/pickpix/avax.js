@@ -1,10 +1,16 @@
+/**
+ * @author Steve Sledzieski
+ */
+
+/**
+ * Import a js script file by name
+ */
 function require(script) {
     $.ajax({
         url: script,
         dataType: "script",
-        async: false,           // <-- This is the key
+        async: false,
         success: function () {
-            // all good...
         },
         error: function () {
             throw new Error("Could not load script " + script);
@@ -14,14 +20,14 @@ function require(script) {
 
 require("/static/pickpix/contract.js");
 
-const container = document.getElementById("container");
+const container = document.getElementById("imageContainer");
 var ethereum;
 var accounts;
 var currentTokenPrice;
-var showingOwned = false;
 var imageSize = 2050.0;
 var maxCols = 224.0;
 
+// Map of chain IDs to names
 var chainIdName = {
     "0x1" : "Ethereum Main Network (Mainnet)",
     "0x3" : "Ropsten Test Network",
@@ -32,6 +38,9 @@ var chainIdName = {
     "0xa86a" : "Avalanche Network"
 }
 
+/**
+ * Draw a grid mask
+ */
 function makeRows(rows, cols) {
     container.style.setProperty('--grid-rows', rows);
     container.style.setProperty('--grid-cols', cols);
@@ -41,6 +50,9 @@ function makeRows(rows, cols) {
     };
 };
 
+/**
+ * Connect to the web wallet
+ */
 async function connectWallet() {
     if (typeof window.ethereum == 'undefined') {
         console.log('MetaMask is not installed.');
@@ -53,9 +65,12 @@ async function connectWallet() {
     await init();
 }
 
+/**
+ * Initialize the page. Load contract address, token price, and account details
+ */
 async function init() {
     updateTokenPrice();
-    document.getElementById('contractAddress').textContent = "Contract Address: " + contractAddress;
+    document.getElementById('contractAddressDisplay').textContent = "Contract Address: " + contractAddress;
 
     if (typeof ethereum == 'undefined' || !ethereum.isConnected()) {
         console.log('Web3 provider not installed or not connected');
@@ -67,6 +82,9 @@ async function init() {
     toggleOwnedTokens();
 }
 
+/**
+ * Return the name of the chain from the chain ID
+ */
 function getChainNameFromId(id) {
     name = chainIdName[id];
     if (typeof id == 'undefined') {
@@ -75,6 +93,9 @@ function getChainNameFromId(id) {
     return name;
 }
 
+/**
+ * Update the view of account details
+ */
 function onAccountsUpdated(updatedAccounts) {
     accounts = updatedAccounts;
     console.log("Accounts updated: " + accounts[0]);
@@ -82,9 +103,21 @@ function onAccountsUpdated(updatedAccounts) {
     chainName = getChainNameFromId(ethereum.chainId);
     var acct_trunc = accounts[0].slice(0, 6) + "..." + accounts[0].slice(-4);
     var details = chainName + " (" + acct_trunc + ")";
-    document.getElementById('account').textContent = details;
+    document.getElementById('accountDisplay').textContent = details;
 }
 
+/**
+ * Update the token price display
+ */
+async function updateTokenPrice() {
+    result = await getTokenPrice();
+
+    document.getElementById('tokenPriceDisplay').textContent = "1 Pixel = " + result.token_price + " AVAX";
+}
+
+/**
+ * Request a Pixel voucher from the server
+ */
 async function requestVoucher() {
     var response;
     response = await $.get('/pickpix/voucher');
@@ -92,6 +125,10 @@ async function requestVoucher() {
     return response;
 }
 
+
+/**
+ * Fetch the token price from the server
+ */
 async function getTokenPrice() {
     var response;
     response = await $.get('/pickpix/token_price');
@@ -99,6 +136,9 @@ async function getTokenPrice() {
     return response;
 }
 
+/**
+ * Mark Pixels owned by the current account
+ */
 async function toggleOwnedTokens() {
     if (accounts != null) {
         var balance = await getOwnerBalance(accounts[0]);
@@ -128,30 +168,38 @@ async function toggleOwnedTokens() {
             container.appendChild(arrow);
         }
     }
-
-    showingOwned = !showingOwned;
 }
 
+/**
+ * Fetch the token URI by id
+ */
 async function getTokenURI(tokenId) {
     let web3 = new Web3(ethereum);
     let contract = new web3.eth.Contract(contractABI, contractAddress);
-
     return await contract.methods.tokenURI(tokenId).call({});
 }
 
+/**
+ * Fetch the token balance of the current account
+ */
 async function getOwnerBalance(owner) {
     let web3 = new Web3(ethereum);
     let contract = new web3.eth.Contract(contractABI, contractAddress);
-
     return await contract.methods.balanceOf(accounts[0]).call({});
 }
 
+/**
+ * Fetch the owner token by index
+ */
 async function getTokenOfOwnerByIndex(owner, index) {
     let web3 = new Web3(ethereum);
     let contract = new web3.eth.Contract(contractABI, contractAddress);
     return await contract.methods.tokenOfOwnerByIndex(owner, index).call({});
 }
 
+/**
+ * Fetch all owned tokens
+ */
 async function getTokensByOwner(owner, balance) {
     var tokens = [];
     for (i = 0; i < balance; i++) {
@@ -160,12 +208,18 @@ async function getTokensByOwner(owner, balance) {
     return tokens;
 }
 
+/**
+ * Fetch the Pixel id by token id
+ */
 async function getPixelByToken(token) {
     let web3 = new Web3(ethereum);
     let contract = new web3.eth.Contract(contractABI, contractAddress);
     return await contract.methods.pixelIdFromTokenId(token).call({});
 }
 
+/**
+ * Fetch Pixels from tokens list
+ */
 async function getPixelsByTokens(tokens) {
     var pixels = [];
     for (i = 0; i < tokens.length; i++) {
@@ -174,6 +228,9 @@ async function getPixelsByTokens(tokens) {
     return pixels;
 }
 
+/**
+ * Call contract to redeem a Pixel token from voucher
+ */
 async function redeemToken() {
     if (typeof ethereum == 'undefined') {
         console.log("Wallet is not connected.");
@@ -207,12 +264,6 @@ async function redeemToken() {
         console.log(error);
         console.log(receipt);
     });
-}
-
-async function updateTokenPrice() {
-    result = await getTokenPrice();
-
-    document.getElementById('currentTokenPrice').textContent = "1 Pixel = " + result.token_price + " AVAX";
 }
 
 init();

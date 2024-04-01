@@ -1,49 +1,49 @@
 {% load static %}
 
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pixel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto Mono:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'pickpix/main.css' %}">
     <script src="{% static 'pickpix/web3.js' %}"></script>
     <script src="{% static 'pickpix/jquery.js' %}"></script>
     <script src="{% static 'pickpix/avax.js' %}" defer></script>
 </head>
-
 <body>
-    <div id="header_elements" style="position: relative; display: flex; justify-content: space-between">
-        <div>
-            <div style="font-family: Courier New; width: 600px;">
-            <p>
-            <img src="{% static 'pickpix/avax.png' %}"> Avalanche
-            <p style="font-family: Courier New">How does it work?</p>
-            <p> 1. Setup Metamask with the Avalanche network described <a href="https://support.avax.network/en/articles/4626956-how-do-i-set-up-metamask-on-avalanche" target="_blank" rel="noopener noreferrer">here</a></p>
-            <p> 2. Buy a Pixel NFT with AVAX</p>
-            <p> 3. Each purchase incrementally reveals the secret image to the world. See your purchased Pixels labeled with this <a href="https://bafybeidmyu4nt7qfx62coupmzhaq6pfjiafgximgrqxrly7kjrcw5q74g4.ipfs.nftstorage.link/1.jpg" target="_blank" rel="noopener noreferrer"><img src="{% static 'pickpix/box_arrow.png' %}"></a></p>
-            <!--<p> 3. Every 5000 pixels purchased triggers an AVAX giveaway to PXL owners!</p> -->
-            <p> ** Remember to "Connect Wallet" to see which pixels you've purchased</p>
-            </p>
-            </div>
-        </div>
-        <div id="dashboard" style="width: 900px; line-height: 0px; background-image: url('{% static 'pickpix/header_main.jpg' %}'); background-size: cover; background-repeat: no-repeat;">
-            <div style="float: right;">
-                <div class="inlined-middle" style="width: 300px; margin-left: 0; margin-right: 0">
-                    <p><span class="dashboard" id="account"></span>&emsp;
-                </div>
-                <div class="inlined-middle" style="width: 160px; margin-left: 0; margin-right: 0">
-                    <button class="dashboard" style="font-size: 18px;" onclick="connectWallet()">Connect Wallet</button></p>
-                </div>
-                <p><span class="notes" id="contractAddress"></span></p>
-            </div>
-            <div style="width: 150px; margin-top: 10px; margin-left: auto; margin-right: 0;">
-                <img style="cursor: pointer;" src={% static 'pickpix/buy_pixel_token.png' %} onclick="redeemToken()">
-                <p><span class="notes" id="currentTokenPrice"></span></p>
-                <div style="width: 150px; margin-left: auto; margin-right: 0;">
-                </div>
-            </div>
+
+<header class="header">
+    <div class="header-section left-bound" id="wallet-and-address">
+        <button id="connectWalletButton" class="connect-wallet-btn" onclick="connectWallet()">Connect Wallet</button>
+        <div id="networkInfo">
+            <div class="info-text-field" id="accountDisplay">Account: N/A</div>
+            <div class="info-text-field" id="contractAddressDisplay">Contract Address: N/A</div>
         </div>
     </div>
-    <div id="container" style="position: relative; width: 100%; height: auto; aspect-ratio: 1/1;">
-        <img id="secretImg" style="height 100%; width: 100%; object-fit: contain;" src="{% static 'pickpix/secret_img.jpg' %}"/>
+    <div class="header-section right-bound" id="purchase-and-price">
+        <button id="buyPixelButton" class="buy-pixel-btn" onclick="redeemToken()">Buy Pixel</button>
+        <div class="info-text-field" id="tokenPriceDisplay">Token Price: N/A</div>
     </div>
+</header>
+
+<main class="main-content">
+    <section class="how-it-works">
+        <h1>How does it work?</h1>
+        <ol>
+            <li>Setup Metamask with the Avalanche network described <a href="https://support.avax.network/en/articles/4626956-how-do-i-set-up-metamask-on-avalanche" target="_blank" rel="noopener noreferrer">here</a>.</li>
+            <li>Buy a Pixel NFT with AVAX.</li>
+            <li>Each purchase incrementally reveals the secret image to the world. See your purchased Pixels labeled with this <a href="https://bafybeidmyu4nt7qfx62coupmzhaq6pfjiafgximgrqxrly7kjrcw5q74g4.ipfs.nftstorage.link/1.jpg" target="_blank" rel="noopener noreferrer"><img src="{% static 'pickpix/box_arrow.png' %}" alt="Pixel Label"></a>.</li>
+            <!-- <li>Every 5000 pixels purchased triggers an AVAX giveaway to PXL owners!</li> -->
+        </ol>
+        <p>** Remember to "Connect Wallet" to see which pixels you've purchased.</p>
+    </section>
+
+    <section id="imageContainer" class="image-reveal">
+        <img id="secretImage" src="{% static 'pickpix/secret_img.jpg' %}" alt="Secret Image" class="secret-img">
+    </section>
+</main>
+
 </body>
 </html>

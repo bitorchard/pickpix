@@ -36,6 +36,8 @@ CACHED_VOUCHER_EXPIRATION_SECS = 30*60
 
 
 class Voucher:
+    """ A voucher for a Pixel
+    """
     def __init__(self, uri, min_price):
         self.uri = uri
         self.min_price = min_price
@@ -54,6 +56,9 @@ class Voucher:
 
 
 def index(request):
+    """
+    Render the main page
+    """
     template = loader.get_template('pickpix/avax.html')
     context = {}
     check_latest_token2()
@@ -61,20 +66,23 @@ def index(request):
 
 
 def token_price(request):
+    """
+    Return the current token price
+    """
     token_price = MIN_PRICE
     try:
-        obj = GlobalConfig.objects.get(name='token_cost')
-        token_price = float(obj.value)
+        #obj = GlobalConfig.objects.get(name='token_cost')
+        #token_price = float(obj.value)
+        token_price = 0.02
     except Pixel.DoesNotExist:
         pass
     return JsonResponse({'token_price' : token_price})
 
 
-def random_free_pixel():
-    return 1
-
-
 def voucher(request):
+    """
+    Generate a signed voucher for requester including the token cost
+    """
     voucher = request.session.get(CACHED_VOUCHER_KEY)
     if voucher:
         if not voucher.creation_date + time_delta(seconds=CACHED_VOUCHER_EXPIRATION_SECS) < datetime.now():
@@ -84,8 +92,9 @@ def voucher(request):
 
     min_price = MIN_PRICE
     try:
-        token_cost = GlobalConfig.objects.get(name='token_cost')
-        min_price = float(token_cost.value)
+        #token_cost = GlobalConfig.objects.get(name='token_cost')
+        #min_price = float(token_cost.value)
+        min_price = 0.02
     except Pixel.DoesNotExist:
         pass
     voucher = Voucher(generate_ipns(), int(min_price*WEI_PER_AVAX))
@@ -94,6 +103,9 @@ def voucher(request):
 
 
 def generate_signature(min_price, ipns_uri):
+    """
+    Generate a signature for the voucher
+    """
     w3 = Web3(Web3.HTTPProvider(PROVIDER_URL))
 
     with open(CONTRACT_JSON_FILE) as f:
@@ -128,10 +140,16 @@ def generate_signature(min_price, ipns_uri):
 
 
 def generate_ipns():
+    """
+    Generate a dummy IPNS URI
+    """
     return "ipns:///TEST_IPNS"
 
 
 def check_latest_token2():
+    """
+    Check the last token and render the secret image with used pixels
+    """
     w3 = Web3(Web3.HTTPProvider(PROVIDER_URL))
 
     with open(CONTRACT_JSON_FILE) as f:
@@ -168,6 +186,9 @@ def check_latest_token2():
 
 
 def lcg_pixels(db_last_token, live_last_token, db_last_pixel):
+    """
+    Given the last known token and pixel, generate delta of used pixels with the linear congruential generator
+    """
     pixels = []
     last_pixel = db_last_pixel
     lcg_c_value = 6666
@@ -183,6 +204,9 @@ def lcg_pixels(db_last_token, live_last_token, db_last_pixel):
 
 
 def draw_mask(used_pixels, size=2050, rows=224, cols=224):
+    """
+    Draw an image mask with transparencies for used pixels to overlay on the secret image
+    """
     mask_file = Path('static/pickpix/images/mask.jpg')
     if mask_file.is_file():
         overlay = Image.open(mask_file)
@@ -205,6 +229,9 @@ def draw_mask(used_pixels, size=2050, rows=224, cols=224):
 
 
 def draw_grid(size=2050, rows=224, cols=224):
+    """
+    Draw a grid to combine with the image mask
+    """
     grid_file = 'static/pickpix/images/grid.jpg'
     step_count = rows
     grid = Image.new(mode='L', size=(size, size), color=255)
@@ -235,6 +262,9 @@ def draw_grid(size=2050, rows=224, cols=224):
 
 
 def render_secret_image2(used_pixels):
+    """
+    Render the secret image with the mask overlay
+    """
     secret_file_src = 'pickpix/secret_lake_mod.png'
     secret_file_render = 'static/pickpix/secret_img.jpg'
 
@@ -250,23 +280,3 @@ def render_secret_image2(used_pixels):
     uid = pwd.getpwnam('steve')[2]
     gid = grp.getgrnam('www-data')[2]
 
-
-def insert_new_token(token_data):
-    token_owner = token_data['owner']
-    token_ids = [token_data['tokenId']]
-    tokens = PickToken.objects.filter(token_id__in=token_ids)
-    for t in tokens:
-        token_ids.remove(t.token_id)
-    for t in token_ids:
-        new_token = PickToken(owner=token_owner, token_id=t)
-        new_token.save()
-        pixel_index = -1
-        while True:
-            pixel_index = randrange(0, MAX_PIXEL_INDEX)
-            try:
-                Pixel.objects.get(pixel_index=pixel_index)
-            except Pixel.DoesNotExist:
-                break
-
-        new_pixel = Pixel(token_id=new_token.id, pixel_index=pixel_index, color="")
-        new_pixel.save()
