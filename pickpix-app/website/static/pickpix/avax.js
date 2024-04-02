@@ -1,8 +1,4 @@
 /**
- * @author Steve Sledzieski
- */
-
-/**
  * Import a js script file by name
  */
 function require(script) {

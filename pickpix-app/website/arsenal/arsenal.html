@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arsenal Tweeter</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2a2a2a;
+            --secondary-color: #f2f2f2;
+            --accent-color: #ff4d4d;
+            --secondary_accent-color: #00aacc; 
+            --tertiary_accent-color: #99cc33;
+            --font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-family);
+            margin: 0;
+            padding: 0;
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .keywords-container, .sentiment-options {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+    
+        .desc {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .notes {
+            font-size: 15px;
+            margin-bottom: 5px;
+        }
+
+        .response-field {
+            width: 97%;
+            min-height: 300px;
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: var(--secondary-color);
+        }
+
+        .selectable {
+            padding: 10px;
+            margin: 5px 5px 5px 0;
+            border: 1px solid var(--primary-color);
+            background-color: var(--secondary-color);
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .toggleDiv {
+            padding: 10px;
+            margin: 5px 5px 5px 0;
+            border: 1px solid var(--primary-color);
+            background-color: var(--secondary-color);
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: fit-content;
+        }
+
+        .option {
+            padding: 10px;
+            margin: 5px 5px 5px 0;
+            border: 1px solid var(--primary-color);
+            background-color: var(--secondary-color);
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .toggleDiv.on {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .option.selected {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .donate-button {
+            background-color: #007bff; /* Blue */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px; /* Rounded corners */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            cursor: pointer; /* Let users know it's clickable */
+            position: fixed; /* Position relative to the container */
+            bottom: 10px; /* Adjust positioning within the container */
+            right: 10px;
+        }
+
+        .donate-button:hover {
+            background-color: #0069d9; /* Darken slightly on hover */
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: var(--tertiary_accent-color);
+            border: none;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: darken(var(--accent-color), 10%);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">The Thing About Arsenal Is, They Always Try To Walk It In</div>
+        <div class="desc">Select keywords below and generate topical tweets about your favorite football team, Arsenal FC.</div>
+        <div class="response-field" id="response_field"></div>
+        <div class="notes">Select keyword(s):</div>
+        <div class="keywords-container">
+            <div id="Porto" class="toggleDiv" onclick="toggleDiv(this)">Porto</div>
+            <div id="Mikel_Arteta" class="toggleDiv" onclick="toggleDiv(this)">Mikel Arteta</div>
+            <div id="Kai_Havertz" class="toggleDiv" onclick="toggleDiv(this)">Kai Havertz</div>
+            <div id="Champions_League" class="toggleDiv" onclick="toggleDiv(this)">Champions League</div>
+            <div id="Budget" class="toggleDiv" onclick="toggleDiv(this)">Budget</div>
+            <div id="Transfers" class="toggleDiv" onclick="toggleDiv(this)">Transfers</div>
+            <div id="Injuries" class="toggleDiv" onclick="toggleDiv(this)">Injuries</div>
+            <div id="Ben White" class="toggleDiv" onclick="toggleDiv(this)">Ben White</div>
+            <div id="Celebrations" class="toggleDiv" onclick="toggleDiv(this)">Celebrations</div>
+            <div id="England Squad" class="toggleDiv" onclick="toggleDiv(this)">England Squad</div>
+        </div>
+        <br>
+        <br>
+        <div class="sentiment-options">
+            <div id="positive_sentiment" class="option selected" onclick="selectOption(this)">Positive Sentiment</div>
+            <div id="negative_sentiment" class="option" onclick="selectOption(this)">Negative Sentiment</div>
+        </div>
+        <br>
+        <button type="button" onclick="submitForm()">Generate</button>
+        <button class="donate-button" style="bottom: 50px;" onclick="donate(1)">Donate $1</button>
+        <button class="donate-button" onclick="donate(5)">Donate $5</button>
+    </div>
+
+    <script>
+        document.querySelectorAll('.option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.option').forEach(other => other.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+
+        function toggleDiv(div) {
+            div.classList.toggle("on");
+        }
+
+        async function submitForm() {
+            const formData = {
+                sentiment: document.querySelector('.option.selected').id,
+                keywords: Array.from(document.querySelectorAll('.toggleDiv.on')).map(div => div.id)
+            };
+
+            const responseField = document.getElementById('response_field');
+            responseField.innerHTML = "Loading...";
+            try {
+                const response = await fetch('generate_content/', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+                responseField.innerHTML = data.message;
+            } catch (error) {
+                console.error('Error:', error);
+                responseField.innerHTML = "Error loading content. Please try again.";
+            }
+        }
+        
+        function donate(amount) {
+            var paypalLink = "https://www.paypal.com/donate/?business=BKLGZFCM7UY4Y&no_recurring=0&item_name=Help+me+build%21&currency_code=USD";
+            window.open(paypalLink + "&amount=" + amount, "_blank");
+        }
+    </script>
+</body>
+</html>
